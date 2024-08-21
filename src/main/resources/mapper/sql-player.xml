@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="soccerTeam.mapper.PlayerMapper">
+    <select id="selectPlayerList" resultType="soccerTeam.dto.PlayerDto">
+        select player_idx, title, player_name, region, player_number, player_period, player_old, player_position, player_athlete, contents, hit_cnt, created_datetime, creator_id, updated_datetime, updator_id, team_idx
+        from player
+         where deleted_yn = 'N'
+         order by player_idx desc
+    </select>
+    
+    <insert id="insertPlayer" parameterType="soccerTeam.dto.PlayerDto">
+        insert into player(title, player_name, region, player_number, player_period, player_old, player_position, player_athlete, contents, created_datetime, creator_id, updated_datetime, updator_id, team_idx)
+        values (#{title}, #{playerName}, #{region}, #{playerNumber}, #{playerPeriod}, #{playerOld}, #{playerPosition}, #{playerAthlete}, #{contents}, now(), #{creatorId}, now(), #{updatorId}, #{teamIdx})
+    </insert>
+    
+     <!-- teamIdx로 필터링된 플레이어 목록 조회 메서드 -->
+    <select id="selectPlayersByTeamIdx" parameterType="int" resultType="soccerTeam.dto.PlayerDto">
+        select player_idx, title, player_name, region, player_number, player_period, player_old, player_position, player_athlete, contents, hit_cnt, created_datetime, creator_id, updated_datetime, updator_id, team_idx
+        from player
+         where deleted_yn = 'N' and team_idx = #{teamIdx}
+         order by player_idx desc
+    </select>
+    
+    <select id="selectPlayerDetail" parameterType="int" resultType="soccerTeam.dto.PlayerDto">
+		select player_idx, title, player_name, region, player_number, player_period, player_old, player_position, player_athlete, contents, hit_cnt, created_datetime, creator_id, updated_datetime, updator_id, team_idx
+		from player
+		 where deleted_yn = 'N' and player_idx = #{playerIdx}   
+	</select>
+    
+    <update id="updateHitCount" parameterType="int">
+		update player
+			set hit_cnt = hit_cnt +1
+		where player_idx = #{playerIdx}
+	</update>
+	
+	<update id="updatePlayer" parameterType="soccerTeam.dto.PlayerDto">
+		update player
+			set title = #{title}, 
+				player_name = #{playerName}, 
+				region = #{region}, 
+				player_number = #{playerNumber}, 
+				player_period = #{playerPeriod}, 
+				player_old = #{playerOld}, 
+				player_position = #{playerPosition}, 
+				player_athlete = #{playerAthlete}, 
+				contents = #{contents}, 
+				updated_datetime = now(), 
+				updator_id = #{updatorId},
+				team_idx = #{teamIdx}
+			where player_idx = #{playerIdx}
+	</update>
+	
+	<delete id="deletePlayer" parameterType="soccerTeam.dto.PlayerDto">
+		update player
+			set deleted_yn = 'Y',
+				updated_datetime = now(),
+				updator_id = #{updatorId}
+		where player_idx = #{playerIdx}
+	</delete>
+</mapper>

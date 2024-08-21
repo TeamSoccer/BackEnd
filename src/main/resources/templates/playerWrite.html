@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<title>선수 등록</title>
+		<link rel="stylesheet" th:href="@{/css/soccerTeam.css}" />
+	</head>
+	<body>
+		<div class="player_container">
+			<h2>선수 등록</h2>
+			
+			<form id="frm" method="post" action="/soccerTeam/insertPlayer.do">
+				<input type="hidden" name="teamIdx" th:value="${teamIdx}" />
+
+				<table class="player_write">
+					<tr>
+						<td>제목</td>
+						<td><input type="text" id="title" name="title" /></td>
+					</tr>
+					<tr>
+						<td>본인 이름</td>
+						<td><input type="text" id="playerName" name="playerName" /></td>
+					</tr>
+					<tr>
+						<td>거주 지역</td>
+						<td><input type="text" id="region" name="region" /></td>
+					</tr>
+					<tr>
+						<td>구력</td>
+						<td><input type="number" id="playerPeriod" name="playerPeriod" /></td>
+					</tr>
+					<tr>
+						<td>연락처</td>
+						<td><input type="text" id="playerNumber" name="playerNumber" /></td>
+					</tr>
+					<tr>
+						<td>나이</td>
+						<td><input type="number" id="playerOld" name="playerOld" /></td>
+					</tr>
+					<tr>
+						<td>포지션</td>
+						<td><input type="text" id="playerPosition" name="playerPosition" /></td>
+					</tr>
+					<tr>
+						<td>선출 여부</td>
+						<td><input type="checkbox" id="playerAthlete" name="playerAthlete" value="true" /></td>
+					</tr>
+					<tr>
+						<td colspan="2"><textarea id="contents" name="contents"></textarea></td>
+					</tr>
+				</table>
+				<button type="button" onclick="insertPlayer()">저장</button>
+            	<button type="button" onclick="cancel()">취소</button>
+			</form>
+		</div>
+		<script>
+	        function insertPlayer() {
+	            if (confirm("저장하시겠습니까?")) {
+	                document.getElementById('frm').submit();
+	            }
+	        }
+	        function cancel() {
+	            if (confirm("취소하시겠습니까?")) {
+	                window.history.back();
+	            }
+	        }
+	    </script>	
+	</body>
+</html>

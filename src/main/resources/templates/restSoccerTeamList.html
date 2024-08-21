@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>팀 게시판</title>
+    <link rel="stylesheet" th:href="@{/css/soccerTeam.css}" />
+</head>
+<body>
+    <div class="container">
+        <h2>Rest 팀 게시판</h2>
+        <table class="soccerTeam_list">
+            <colgroup>
+                <col width="5%" />
+                <col width="15%" />
+                <col width="20%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="20%" />
+                <col width="20%" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th scope="col">글 번호</th>
+                    <th scope="col">팀 이름</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">지역</th>
+                    <th scope="col">요일</th>
+                    <th scope="col">시간</th>
+                    <th scope="col">등록일</th>
+                    <th scope="col">수정일</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="team : ${list}">
+                    <td th:text="${team.teamIdx}"></td>
+                    <td th:text="${team.teamName}"></td>
+                    <td class="title">
+                        <a th:href="@{'/soccerTeam/' + ${team.teamIdx}}" th:text="${team.title}"></a>
+                    </td>
+                    <td th:text="${team.region}"></td>
+                    <td th:text="${team.teamDay}"></td>
+                    <td th:text="${team.teamTime}"></td>
+                    <td th:text="${team.createdDatetime}"></td>
+                    <td th:text="${team.updatedDatetime}"></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(list)}">
+                    <td colspan="8">조회된 결과가 없습니다.</td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="/soccerTeam/write" class="btn">글쓰기</a>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $(function() {
+            $('a.title').on('click', function(event) {
+                event.preventDefault();
+                const teamIdx = $(this).data('teamIdx');
+                location.href = '/soccerTeam/' + teamIdx;
+            });
+
+            $('.btn.write').on('click', function(event) {
+                event.preventDefault();
+                location.href = '/soccerTeam/write';
+            });
+        });
+    </script>
+</body>
+</html>

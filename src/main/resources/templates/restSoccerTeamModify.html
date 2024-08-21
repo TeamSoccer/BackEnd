@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>팀 정보 수정</title>
+    <link rel="stylesheet" th:href="@{/css/soccerTeam.css}" />
+</head>
+<body>
+    <div class="container">
+        <h2>Rest 팀 정보 수정</h2>
+        <form id="frm" method="post">
+            <input type="hidden" id="teamIdx" name="teamIdx" th:value="${soccerTeam.teamIdx}"/>
+
+            <table class="soccerTeam_detail">
+                <colgroup>
+                    <col width="20%" />
+                    <col width="20%" />
+                    <col width="20%" />
+                    <col width="20%" />
+                    <col width="20%" />
+                </colgroup>
+                <tr>
+                    <th scope="row">글 번호</th>
+                    <td th:text="${soccerTeam.teamIdx}"></td>    
+                    <th scope="row">조회수</th>
+                    <td th:text="${soccerTeam.hitCnt}"></td>
+                </tr>
+                <tr>
+                    <th scope="row">작성자</th>
+                    <td th:text="${soccerTeam.creatorId}"></td>
+                    <th scope="row">작성일</th>
+                    <td th:text="${soccerTeam.createdDatetime}"></td>
+                    <th scope="row">수정일</th>
+                    <td th:text="${soccerTeam.updatedDatetime}"></td>
+                </tr>
+                <tr>
+                    <th scope="row">팀 이름</th>
+                    <td colspan="3"><input type="text" id="teamName" name="teamName" th:value="${soccerTeam.teamName}" /></td>
+                </tr>
+                <tr>
+                    <th scope="row">지역</th>
+                    <td colspan="3"><input type="text" id="region" name="region" th:value="${soccerTeam.region}" /></td>
+                </tr>
+                <tr>
+                    <th scope="row">운영 기간</th>
+                    <td colspan="3"><input type="number" id="teamPeriod" name="teamPeriod" th:value="${soccerTeam.teamPeriod}" /></td>
+                </tr>
+                <tr>
+                    <th scope="row">팀 연령대</th>
+                    <td colspan="3"><input type="number" id="teamOld" name="teamOld" th:value="${soccerTeam.teamOld}" /></td>
+                </tr>
+                <tr>
+                    <th scope="row">선출 수</th>
+                    <td colspan="3"><input type="number" id="athleteNumber" name="athleteNumber" th:value="${soccerTeam.athleteNumber}" /></td>
+                </tr>
+                <tr>
+                    <th scope="row">요일</th>
+                    <td colspan="3"><input type="text" id="teamDay" name="teamDay" th:value="${soccerTeam.teamDay}" /></td>
+                </tr>
+                <tr>
+                    <th scope="row">시간</th>
+                    <td colspan="3"><input type="number" id="teamTime" name="teamTime" th:value="${soccerTeam.teamTime}" /></td>
+                </tr>
+                <tr>
+                    <th scope="row">연락처</th>
+                    <td colspan="3"><input type="text" id="teamNumber" name="teamNumber" th:value="${soccerTeam.teamNumber}" /></td>
+                </tr>
+                <tr>
+                    <th scope="row">필요 포지션</th>
+                    <td colspan="3"><input type="text" id="needPosition" name="needPosition" th:value="${soccerTeam.needPosition}" /></td>
+                </tr>
+                <tr>
+                    <th scope="row">필요 포지션 수</th>
+                    <td colspan="3"><input type="number" id="needPositionNumber" name="needPositionNumber" th:value="${soccerTeam.needPositionNumber}" /></td>
+                </tr>
+                <tr>
+                    <th scope="row">제목</th>
+                    <td colspan="3"><input type="text" id="title" name="title" th:value="${soccerTeam.title}" /></td>
+                </tr>
+                <tr>
+                    <td colspan="4"><textarea id="contents" name="contents" th:text="${soccerTeam.contents}"></textarea></td>
+                </tr>
+            </table>
+        </form>
+
+        <input type="button" id="list" class="btn" value="목록으로"/>
+        <input type="button" id="update" class="btn" value="저장"/>
+        <input type="button" id="cancel" class="btn" value="취소"/>
+
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script>
+            $(function() {
+                $('#list').on('click', function() {
+                    location.href = '/soccerTeam';
+                });
+                $('#update').on('click', function() {
+                    let frm = $('#frm')[0];
+                    frm.action = "/soccerTeam/" + $('#teamIdx').val();
+                    frm.method = "POST";
+                    frm.submit();
+                });
+                $('#cancel').on('click', function() {
+                    location.href = '/soccerTeam/' + $('#teamIdx').val();
+                });
+            });
+        </script>
+    </div>    
+</body>
+</html>

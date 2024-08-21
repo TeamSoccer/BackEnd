@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<title>선수 정보 수정</title>
+		<link rel="stylesheet" th:href="@{/css/soccerTeam.css}" />
+	</head>
+	<body>
+		<div class="container">
+			<h2>선수 정보 수정</h2>
+			<form id="frm" method="post">
+				<input type="hidden" id="teamIdx" name="teamIdx" th:value="${player.teamIdx}"/>
+				<input type="hidden" id="playerIdx" name="playerIdx" th:value="${player.playerIdx}"/>
+			
+				<table class="soccerTeam_detail">
+					<colgroup>
+					 	<col width="20%" />
+					 	<col width="20%" />
+					 	<col width="20%" />
+					 	<col width="20%" />
+					 	<col width="20%" />
+					</colgroup>
+					<tr>
+						<th scope="row">글 번호</th>
+						<td th:text="${player.playerIdx}"></td>	
+						<th scope="row">조회수</th>
+						<td th:text="${player.hitCnt}"></td>
+					</tr>
+					<tr>
+						<th scope="row">작성자</th>
+						<td th:text="${player.creatorId}"></td>
+						<th scope="row">작성일</th>
+						<td th:text="${player.createdDatetime}"></td>
+						<th scope="row">수정일</th>
+						<td th:text="${player.updatedDatetime}"></td>
+					</tr>
+					
+					<tr>
+					    <th scope="row">제목</th>
+					    <td colspan="3"><input type="text" id="title" name="title" th:value="${player.title}" /></td>
+					</tr>
+					<tr>
+					    <th scope="row">본인 이름</th>
+					    <td colspan="3"><input type="text" id="playerName" name="playerName" th:value="${player.playerName}" /></td>
+					</tr>
+					<tr>
+					    <th scope="row">거주 지역</th>
+					    <td colspan="3"><input type="text" id="region" name="region" th:value="${player.region}" /></td>
+					</tr>
+					<tr>
+					    <th scope="row">구력</th>
+					    <td colspan="3"><input type="number" id="playerPeriod" name="playerPeriod" th:value="${player.playerPeriod}" /></td>
+					</tr>
+					<tr>
+					    <th scope="row">연락처</th>
+					    <td colspan="3"><input type="text" id="playerNumber" name="playerNumber" th:value="${player.playerNumber}" /></td>
+					</tr>
+					<tr>
+					    <th scope="row">나이</th>
+					    <td colspan="3"><input type="number" id="playerOld" name="playerOld" th:value="${player.playerOld}" /></td>
+					</tr>
+					<tr>
+					    <th scope="row">포지션</th>
+					    <td colspan="3"><input type="text" id="playerPosition" name="playerPosition" th:value="${player.playerPosition}" /></td>
+					</tr>
+					<tr>
+					    <th scope="row">선출 여부</th>
+					    <td colspan="3"><input type="checkbox" id="playerAthlete" name="playerAthlete" th:checked="${player.playerAthlete}" value="true" /></td>
+					</tr>
+					<tr>
+					    <th scope="row">내용</th>
+					    <td colspan="3"><textarea id="contents" name="contents" th:text="${player.contents}"></textarea></td>
+					</tr>
+				</table>
+				
+			</form>
+			
+			<input type="button" id="list" class="btn" value="목록으로"/>
+			<input type="button" id="update" class="btn" value="저장"/>
+			<input type="button" id="cancel" class="btn" value="취소"/>
+			
+			<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+			<script>
+				$(function() {
+					$('#list').on('click', function() {
+						location.href = 'openSoccerTeamDetail.do?teamIdx=' + $('#teamIdx').val();
+					});
+					$('#update').on('click', function() {
+						let frm = $('#frm')[0];
+						frm.action = "updatePlayer.do";
+						frm.submit();
+					});
+					$('#cancel').on('click', function() {
+						location.href = 'openPlayerDetail.do?playerIdx=' + $('#playerIdx').val();
+					});
+				});
+			</script>
+		</div>	
+	</body>
+</html>
