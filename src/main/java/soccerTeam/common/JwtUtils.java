@@ -45,7 +45,7 @@ public class JwtUtils {
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
 	}
 
-	public String createJwt(String username, String role, long exp) {
+	public String createJwt(String username, String role) {
 		return Jwts.builder()
 				.claim("username", username)
 				.claim("role", role)

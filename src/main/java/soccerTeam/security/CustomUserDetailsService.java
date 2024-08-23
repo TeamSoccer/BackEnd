@@ -1,7 +1,8 @@
-package soccerTeam.player.service;
+package soccerTeam.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import soccerTeam.dto.CustomUserDetails;
@@ -12,12 +13,20 @@ import soccerTeam.type.player.PlayerErrorType;
 
 @Service
 @RequiredArgsConstructor
-public class PlayerServiceImpl implements PlayerService {
+public class CustomUserDetailsService implements UserDetailsService {
     private final PlayerRepository playerRepository;
 
     @Override
-    public PlayerEntity findByUsername(String username) {
-        return playerRepository.findByUsername(username)
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        //DB에서 조회
+        PlayerEntity userData = playerRepository.findByUsername(username)
                 .orElseThrow(() -> new NotFoundException(PlayerErrorType.PLAYER_NOT_FOUND));
+
+        if (userData != null) {
+            //UserDetails에 담아서 return하면 AutneticationManager가 검증 함
+            return new CustomUserDetails(userData);
+        }
+
+        return null;
     }
 }

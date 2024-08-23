@@ -2,18 +2,20 @@ package soccerTeam.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class JoinDto {
-    private final String name;
-    private final String email;
-    private final String username;
-    private final String password;
-    private final String passwordConfirm;
-    private final String phoneNumber;
-    private final Integer period;
-    private final Integer age;
-    private final Boolean athlete;
+    private String name;
+    private String email;
+    private String username;
+    private String password;
+    private String passwordConfirm;
+    private String phoneNumber;
+    private Integer period;
+    private Integer age;
+    private Boolean athlete;
 
     @Builder
     public JoinDto(
