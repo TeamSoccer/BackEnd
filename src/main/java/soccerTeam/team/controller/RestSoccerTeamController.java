@@ -37,21 +37,8 @@ public class RestSoccerTeamController {
 
     @Operation(summary = "게시판 목록 조회", description = "등록된 게시물 목록을 조회해서 반환합니다.")
     @GetMapping
-    public ApiResponse<List<SoccerTeamListResponseDto>> getAllSoccerTeams() {
-        List<SoccerTeamListResponseDto> response = soccerTeamService.selectSoccerTeamList().stream()
-                .map(team -> new SoccerTeamListResponseDto(
-                        team.getId(),
-                        team.getTitle(),
-                        team.getName(),
-                        team.getRegion(),
-                        team.getDay(),
-                        team.getStartTime(),
-                        team.getEndTime(),
-                        team.getCreatedAt(),
-                        team.getUpdatedAt()))
-                .collect(Collectors.toList());
-
-        return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_LIST_SUCCESS, response);
+    public ApiResponse<List<SoccerTeamEntity>> getAllSoccerTeams() {
+        return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_LIST_SUCCESS, soccerTeamService.selectSoccerTeamList());
     }
     
     @Operation(summary = "게시판 등록", description = "게시물 제목과 내용을 저장합니다.")
