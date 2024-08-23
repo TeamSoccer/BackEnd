@@ -2,7 +2,11 @@ package soccerTeam.team.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import soccerTeam.dto.SoccerTeamDto;
+import soccerTeam.exception.BadRequestException;
+import soccerTeam.team.SoccerTeamUpdateDto;
+import soccerTeam.team.dto.SoccerTeamDto;
+import soccerTeam.team.dto.request.SoccerTeamUpdateRequest;
+import soccerTeam.type.soccerTeam.SoccerTeamErrorType;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,24 +43,27 @@ public class SoccerTeamRepositoryImpl implements SoccerTeamRepository {
     }
 
     @Override
-    public Optional<SoccerTeamEntity> update(SoccerTeamDto soccerTeamDto) {
-        Optional<SoccerTeamEntity> soccerTeam = findById(soccerTeamDto.getId());
+    public Optional<SoccerTeamEntity> update(String username, SoccerTeamUpdateDto soccerTeamDto) {
+        Optional<SoccerTeamEntity> soccerTeam = findById(soccerTeamDto.id());
         if (soccerTeam.isPresent()) {
             SoccerTeamEntity soccerTeamEntity = soccerTeam.get();
-            soccerTeamEntity.setTitle(soccerTeamDto.getTitle());
-            soccerTeamEntity.setName(soccerTeamDto.getName());
-            soccerTeamEntity.setRegion(soccerTeamDto.getRegion());
-            soccerTeamEntity.setPhoneNumber(soccerTeamDto.getPhoneNumber());
-            soccerTeamEntity.setPeriod(soccerTeamDto.getPeriod());
-            soccerTeamEntity.setDay(soccerTeamDto.getDay());
-            soccerTeamEntity.setEndTime(soccerTeamDto.getEndTime());
-            soccerTeamEntity.setStartTime(soccerTeamDto.getStartTime());
-            soccerTeamEntity.setEndTime(soccerTeamDto.getEndTime());
-            soccerTeamEntity.setAgeAverage(soccerTeamDto.getAgeAverage());
-            soccerTeamEntity.setNeedPosition(soccerTeamDto.getNeedPosition());
-            soccerTeamEntity.setNeedPositionCnt(soccerTeamDto.getNeedPositionCnt());
-            soccerTeamEntity.setAthleteCnt(soccerTeamDto.getAthleteCnt());
-            soccerTeamEntity.setContents(soccerTeamDto.getContents());
+            if (!soccerTeamEntity.getPlayer().getUsername().equals(username)) {
+                throw new BadRequestException(SoccerTeamErrorType.TEAM_OWNER_CAN_MODIFY);
+            }
+            soccerTeamEntity.setTitle(soccerTeamDto.title());
+            soccerTeamEntity.setName(soccerTeamDto.name());
+            soccerTeamEntity.setRegion(soccerTeamDto.region());
+            soccerTeamEntity.setPhoneNumber(soccerTeamDto.phoneNumber());
+            soccerTeamEntity.setPeriod(soccerTeamDto.period());
+            soccerTeamEntity.setDay(soccerTeamDto.day());
+            soccerTeamEntity.setEndTime(soccerTeamDto.endTime());
+            soccerTeamEntity.setStartTime(soccerTeamDto.startTime());
+            soccerTeamEntity.setEndTime(soccerTeamDto.endTime());
+            soccerTeamEntity.setAgeAverage(soccerTeamDto.ageAverage());
+            soccerTeamEntity.setNeedPosition(soccerTeamDto.needPosition());
+            soccerTeamEntity.setNeedPositionCnt(soccerTeamDto.needPositionCnt());
+            soccerTeamEntity.setAthleteCnt(soccerTeamDto.athleteCnt());
+            soccerTeamEntity.setContents(soccerTeamDto.contents());
             return Optional.of(soccerTeamEntity);
         }
         return soccerTeam;

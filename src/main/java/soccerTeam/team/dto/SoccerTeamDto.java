@@ -1,10 +1,11 @@
-package soccerTeam.dto;
+package soccerTeam.team.dto;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
 import lombok.*;
+import soccerTeam.dto.SoccerTeamFileDto;
 import soccerTeam.player.dto.response.PlayerProfileResponse;
 
 @Data
