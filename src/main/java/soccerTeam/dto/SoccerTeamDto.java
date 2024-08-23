@@ -1,71 +1,37 @@
 package soccerTeam.dto;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import soccerTeam.player.repository.PlayerEntity;
 
 @Data
+@AllArgsConstructor
 public class SoccerTeamDto {
-	private int teamIdx;
-	private String title;
-	private String teamName;
-	private String region;
-	private String teamNumber;
-	private int teamPeriod;
-	private String teamDay;
-	private int teamTime;
-	private String teamOld;
-	private String needPosition;
-	private int needPositionNumber;
-	private int athleteNumber;
-	private String contents;
-	private int hitCnt;
-	private Date createdDatetime;
-	private String creatorId;
-	private Date updatedDatetime;
-	private String updatorId;
-	
+    private Long id;
+    private PlayerEntity player;
+    private String title;
+    private String name;
+    private String region;
+    private String phoneNumber;
+    private Integer period;
+    private String day;
+    private Time startTime;
+    private Time endTime;
+    private Integer ageAverage;
+    private String needPosition;
+    private String needPositionCnt;
+    private Integer athleteCnt;
+    private String contents;
+    private Integer hitCnt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 	private List<SoccerTeamFileDto> fileInfoList;
-	
-	public Date getCreatedDatetime() {
-        return createdDatetime;
-    }
-
-    public void setCreatedDatetime(Date createdDatetime) {
-        this.createdDatetime = createdDatetime;
-    }
-    
-    public Date getUpdatedDatetime() {
-        return updatedDatetime;
-    }
-
-    public void setUpdatedDatetime(Date updatedDatetime) {
-        this.updatedDatetime = updatedDatetime;
-    }
-    
- // 날짜 포맷팅
-    public String getCreatedAtFormatted() {
-        return formatDate(createdDatetime);
-    }
-
-    public String getUpdatedAtFormatted() {
-        return formatDate(updatedDatetime);
-    }
-
-    private String formatDate(Date date) {
-        if (date == null) return "";
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return formatter.format(date);
-    }
- // getters and setters
-    public int getTeamIdx() {
-        return teamIdx;
-    }
-
-    public void setTeamIdx(int teamIdx) {
-        this.teamIdx = teamIdx;
-    }
 }
 

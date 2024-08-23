@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: soccerTeam
+  config:
+    import: optional:application-secret.properties
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: false
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+    show-sql: true
+  sql:
+    init:
+      mode: never
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 100MB
+      location: ${FILE_LOCATION}
+  # jwt
+  jwt:
+    secret: ${JWT_SECRET}
+    expire-length: 86400000
+
+  client:
+    url: ${CLIENT_URL}
+    test-url: http://localhost:3000
+
+#logging.level.root: debug
