@@ -3,6 +3,7 @@ package soccerTeam.team.repository;
 
 import java.sql.Time;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -50,10 +51,10 @@ public class SoccerTeamEntity {
 	private String day;
 
 	@Column
-	private Time startTime;
+	private LocalTime startTime;
 
 	@Column
-	private Time endTime;
+	private LocalTime endTime;
 
 	@Column
 	private Integer ageAverage;
@@ -92,8 +93,8 @@ public class SoccerTeamEntity {
 			String phoneNumber,
 			Integer period,
 			String day,
-			Time startTime,
-			Time endTime,
+			LocalTime startTime,
+			LocalTime endTime,
 			Integer ageAverage,
 			String needPosition,
 			String needPositionCnt,
@@ -138,6 +139,7 @@ public class SoccerTeamEntity {
 				.needPositionCnt(request.getNeedPositionCnt())
 				.athleteCnt(request.getAthleteCnt())
 				.contents(request.getContents())
+				.hitCnt(0)
 				.build();
 	}
 

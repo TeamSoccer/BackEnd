@@ -12,21 +12,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import soccerTeam.dto.ApiResponse;
 import soccerTeam.dto.PlayerDto;
 import soccerTeam.dto.SoccerTeamDto;
 import soccerTeam.dto.SoccerTeamFileDto;
@@ -34,6 +27,7 @@ import soccerTeam.security.LoginMember;
 import soccerTeam.team.dto.request.SoccerTeamInsertRequest;
 import soccerTeam.team.service.SoccerTeamService;
 import soccerTeam.team.repository.SoccerTeamEntity;
+import soccerTeam.type.soccerTeam.SoccerTeamSuccessType;
 
 @Slf4j
 @RestController
@@ -45,16 +39,16 @@ public class RestSoccerTeamController {
 
     @Operation(summary = "게시판 목록 조회", description = "등록된 게시물 목록을 조회해서 반환합니다.")
     @GetMapping
-    public List<SoccerTeamEntity> getAllSoccerTeams() {
-        return soccerTeamService.selectSoccerTeamList();
+    public ApiResponse<List<SoccerTeamEntity>> getAllSoccerTeams() {
+        return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_LIST_SUCCESS, soccerTeamService.selectSoccerTeamList());
     }
     
     @Operation(summary = "게시판 등록", description = "게시물 제목과 내용을 저장합니다.")
     @Parameter(name = "soccerTeamDto", description = "게시물 정보를 담고 있는 객체", required = true)
     @PostMapping("/write")
     public ResponseEntity<Void> insertSoccerTeam(
-            @RequestPart(value = "data") SoccerTeamInsertRequest soccerTeamInsertRequest,
-            @RequestPart(value = "files", required = false) MultipartFile[] files) {
+            @ModelAttribute SoccerTeamInsertRequest soccerTeamInsertRequest,
+            @RequestParam(value = "files", required = false) MultipartFile[] files) {
         try {
             // 로깅 추가
             System.out.println("Received data: " + soccerTeamInsertRequest);
