@@ -63,7 +63,7 @@ public class RestSoccerTeamController {
     }
 
     @GetMapping("/{teamIdx}")
-    public ResponseEntity<Map<String, Object>> getSoccerTeamDetail(@PathVariable("teamIdx") Long teamIdx) throws Exception {
+    public ApiResponse<SoccerTeamDto> getSoccerTeamDetail(@PathVariable("teamIdx") Long teamIdx) throws Exception {
         SoccerTeamDto soccerTeamDtoResult = soccerTeamService.selectSoccerTeamDetail(teamIdx);
 //        if (soccerTeamDtoResult == null) {
 //            Map<String, Object> result = new HashMap<>();
@@ -77,7 +77,7 @@ public class RestSoccerTeamController {
 //            response.put("playerList", playerList);
 //            return ResponseEntity.status(HttpStatus.OK).body(response);
 //        }
-        return null;
+        return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_SUCCESS, soccerTeamDtoResult);
     }
 
     @PutMapping

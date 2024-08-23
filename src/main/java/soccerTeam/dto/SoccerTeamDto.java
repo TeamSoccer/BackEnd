@@ -1,22 +1,17 @@
 package soccerTeam.dto;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import soccerTeam.player.repository.PlayerEntity;
+import lombok.*;
+import soccerTeam.player.dto.response.PlayerProfileResponse;
 
 @Data
 @AllArgsConstructor
 public class SoccerTeamDto {
     private Long id;
-    private PlayerEntity player;
+    private PlayerProfileResponse player;
     private String title;
     private String name;
     private String region;
