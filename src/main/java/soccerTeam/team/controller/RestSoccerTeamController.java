@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,10 +20,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import soccerTeam.dto.ApiResponse;
-import soccerTeam.dto.PlayerDto;
-import soccerTeam.dto.SoccerTeamDto;
-import soccerTeam.dto.SoccerTeamFileDto;
+import soccerTeam.dto.*;
 import soccerTeam.security.LoginMember;
 import soccerTeam.team.dto.request.SoccerTeamInsertRequest;
 import soccerTeam.team.service.SoccerTeamService;
@@ -39,8 +37,21 @@ public class RestSoccerTeamController {
 
     @Operation(summary = "게시판 목록 조회", description = "등록된 게시물 목록을 조회해서 반환합니다.")
     @GetMapping
-    public ApiResponse<List<SoccerTeamEntity>> getAllSoccerTeams() {
-        return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_LIST_SUCCESS, soccerTeamService.selectSoccerTeamList());
+    public ApiResponse<List<SoccerTeamListResponseDto>> getAllSoccerTeams() {
+        List<SoccerTeamListResponseDto> response = soccerTeamService.selectSoccerTeamList().stream()
+                .map(team -> new SoccerTeamListResponseDto(
+                        team.getId(),
+                        team.getTitle(),
+                        team.getName(),
+                        team.getRegion(),
+                        team.getDay(),
+                        team.getStartTime(),
+                        team.getEndTime(),
+                        team.getCreatedAt(),
+                        team.getUpdatedAt()))
+                .collect(Collectors.toList());
+
+        return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_LIST_SUCCESS, response);
     }
     
     @Operation(summary = "게시판 등록", description = "게시물 제목과 내용을 저장합니다.")
