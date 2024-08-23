@@ -1,7 +1,6 @@
 package soccerTeam.team.service;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,7 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
 import soccerTeam.common.FileUtils;
-import soccerTeam.dto.SoccerTeamDto;
+import soccerTeam.team.SoccerTeamUpdateDto;
+import soccerTeam.team.dto.SoccerTeamDto;
 import soccerTeam.dto.SoccerTeamFileDto;
 import soccerTeam.exception.NotFoundException;
 import soccerTeam.image.repository.SoccerTeamFileEntity;
@@ -20,6 +20,7 @@ import soccerTeam.image.repository.SoccerTeamFileRepository;
 import soccerTeam.player.repository.PlayerEntity;
 import soccerTeam.player.repository.PlayerRepository;
 import soccerTeam.team.dto.request.SoccerTeamInsertRequest;
+import soccerTeam.team.dto.request.SoccerTeamUpdateRequest;
 import soccerTeam.team.repository.SoccerTeamEntity;
 import soccerTeam.team.repository.SoccerTeamRepository;
 import soccerTeam.type.soccerTeam.SoccerTeamErrorType;
@@ -66,12 +67,14 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
     }
 
     @Override
-    public void updateSoccerTeam(SoccerTeamDto soccerTeamDto) {
-        soccerTeamRepository.update(soccerTeamDto);
+    @Transactional
+    public void updateSoccerTeam(String username, SoccerTeamUpdateRequest updateRequest) {
+        soccerTeamRepository.update(username, SoccerTeamUpdateDto.from(updateRequest))
+                .orElseThrow(() -> new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND));
     }
 
-    @Transactional
     @Override
+    @Transactional
     public SoccerTeamDto selectSoccerTeamDetail(Long teamIdx) {
         SoccerTeamEntity soccerTeam = soccerTeamRepository.updateHitCount(teamIdx)
                 .orElseThrow(() -> new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND));

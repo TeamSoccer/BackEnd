@@ -6,8 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,9 +18,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import soccerTeam.dto.*;
+import soccerTeam.dto.ApiResponse;
 import soccerTeam.security.LoginMember;
+import soccerTeam.team.dto.SoccerTeamDto;
+import soccerTeam.dto.SoccerTeamFileDto;
 import soccerTeam.team.dto.request.SoccerTeamInsertRequest;
+import soccerTeam.team.dto.request.SoccerTeamUpdateRequest;
 import soccerTeam.team.service.SoccerTeamService;
 import soccerTeam.team.repository.SoccerTeamEntity;
 import soccerTeam.type.soccerTeam.SoccerTeamSuccessType;
@@ -79,9 +80,11 @@ public class RestSoccerTeamController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateSoccerTeam(@RequestBody SoccerTeamDto soccerTeamDto) {
-        soccerTeamService.updateSoccerTeam(soccerTeamDto);
-        return ResponseEntity.status(HttpStatus.OK).build();
+    public ApiResponse<?> updateSoccerTeam(
+            @LoginMember String username,
+            @RequestBody SoccerTeamUpdateRequest updateRequest) {
+        soccerTeamService.updateSoccerTeam(username, updateRequest);
+        return ApiResponse.success(SoccerTeamSuccessType.UPDATE_SOCCER_TEAM_SUCCESS);
     }
 
     @DeleteMapping("/{teamIdx}")
