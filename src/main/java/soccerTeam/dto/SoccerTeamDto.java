@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -22,8 +23,8 @@ public class SoccerTeamDto {
     private String phoneNumber;
     private Integer period;
     private String day;
-    private Time startTime;
-    private Time endTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private Integer ageAverage;
     private String needPosition;
     private String needPositionCnt;
