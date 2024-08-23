@@ -1,87 +1,92 @@
 package soccerTeam.configuration;
 
-import java.util.Arrays;
+import java.util.Collections;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.CorsConfigurationSource;
 
-import jakarta.servlet.http.HttpServletResponse;
-import soccerTeam.security.CustomAuthenticationSuccessHandler;
-import soccerTeam.security.JwtRequestFilter;
+import soccerTeam.common.JwtUtils;
+import soccerTeam.filter.LoginFilter;
+import soccerTeam.security.JWTFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfiguration {
-
-    @Autowired
-    private CustomAuthenticationSuccessHandler successHandler;
-
-    @Autowired
-    private JwtRequestFilter jwtRequestFilter;
+    private final JwtUtils jwtUtils;
+    private final AuthenticationConfiguration authenticationConfiguration;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            //.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/**", "/login", "/loginProc", "/join", "/joinProc", "/home", "/api/join", "/api/login", "/api/soccerTeam/**").permitAll()
-//              .requestMatchers("/admin").hasRole("ADMIN")
-//              .requestMatchers("/board/**", "/api/**").hasAnyRole("ADMIN", "USER")
-            .anyRequest().authenticated()
-            )
-            .formLogin(form -> form
-                //.loginPage("/login")
-                .loginProcessingUrl("/api/login")
-                .permitAll()
-                .successHandler(successHandler)
-            )
-            .csrf(csrf -> csrf.disable())
-            
-            .sessionManagement(session -> session
-                .sessionFixation().newSession()
-                .maximumSessions(1)
-                .maxSessionsPreventsLogin(true)
-            )
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
-            )
-            
-            .httpBasic(customizer -> customizer.authenticationEntryPoint((request, response, authException) -> {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-            }));
+                .cors(cors -> cors.configurationSource(new CorsConfigurationSource() {
+                    @Override
+                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                        CorsConfiguration configuration = new CorsConfiguration();
+
+                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                        configuration.setAllowedMethods(Collections.singletonList("*"));
+                        configuration.setAllowCredentials(true);
+                        configuration.setAllowedHeaders(Collections.singletonList("*"));
+                        configuration.setMaxAge(3600L);
+
+                        configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+
+                        return configuration;
+                    }
+                }))
+                .csrf(csrf -> csrf.disable())
+                .formLogin((auth) -> auth.disable())
+                .httpBasic((auth) -> auth.disable())
+                .authorizeHttpRequests(authz -> authz
+                    .requestMatchers(
+                            "/**",
+                            "/login",
+                            "/loginProc",
+                            "/join",
+                            "/joinProc",
+                            "/home",
+                            "/api/join",
+                            "/api/login",
+                            "/api/soccerTeam/**"
+                    ).permitAll()
+                .anyRequest().authenticated()
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .logout(logout -> logout
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/")
+                );
+
+        http.addFilterBefore(new JWTFilter(jwtUtils), LoginFilter.class);
+        http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtils), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-    }
-
-    //@Bean
-    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(Arrays.asList("*"));
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
     }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
     }
 }
 
