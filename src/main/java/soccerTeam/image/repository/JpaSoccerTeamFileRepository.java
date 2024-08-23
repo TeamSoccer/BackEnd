@@ -7,6 +7,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface JpaSoccerTeamFileRepository extends JpaRepository<SoccerTeamFileEntity, Long> {
-    @Query("SELECT sfe FROM SoccerTeamFileEntity sfe WHERE sfe.soccerTeam = :teamId")
+    @Query("SELECT sfe FROM SoccerTeamFileEntity sfe WHERE sfe.soccerTeam.id = :teamId")
     List<SoccerTeamFileEntity> findByTeamId(@Param("teamId") Long teamId);
 }

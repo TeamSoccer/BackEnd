@@ -1,7 +1,6 @@
 package soccerTeam.team.repository;
 
 
-import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -16,6 +15,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import soccerTeam.dto.SoccerTeamDto;
 import soccerTeam.dto.SoccerTeamFileDto;
+import soccerTeam.player.dto.response.PlayerProfileResponse;
 import soccerTeam.player.repository.PlayerEntity;
 import soccerTeam.team.dto.request.SoccerTeamInsertRequest;
 
@@ -146,7 +146,7 @@ public class SoccerTeamEntity {
 	public SoccerTeamDto toModel(List<SoccerTeamFileDto> files) {
 		return new SoccerTeamDto(
 				id,
-				player,
+				PlayerProfileResponse.of(player),
 				title,
 				name,
 				region,
