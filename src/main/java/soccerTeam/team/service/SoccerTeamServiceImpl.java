@@ -1,6 +1,7 @@
 package soccerTeam.team.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
 import soccerTeam.common.FileUtils;
+import soccerTeam.dto.SoccerTeamListResponseDto;
 import soccerTeam.team.SoccerTeamUpdateDto;
 import soccerTeam.team.dto.SoccerTeamDto;
 import soccerTeam.dto.SoccerTeamFileDto;
@@ -38,6 +40,22 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
     @Override
     public List<SoccerTeamEntity> selectSoccerTeamList() {
         return soccerTeamRepository.findAll();
+    }
+
+    @Override
+    public List<SoccerTeamListResponseDto> selectSoccerTeamListDto() {
+        return soccerTeamRepository.findAll().stream()
+                .map(team -> new SoccerTeamListResponseDto(
+                        team.getId(),
+                        team.getTitle(),
+                        team.getName(),
+                        team.getRegion(),
+                        team.getDay(),
+                        team.getStartTime(),
+                        team.getEndTime(),
+                        team.getCreatedAt(),
+                        team.getUpdatedAt()))
+                .collect(Collectors.toList());
     }
 
     @Override

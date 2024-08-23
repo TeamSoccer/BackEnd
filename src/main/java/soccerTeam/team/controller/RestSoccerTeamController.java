@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import soccerTeam.dto.ApiResponse;
+import soccerTeam.dto.SoccerTeamListResponseDto;
 import soccerTeam.security.LoginMember;
 import soccerTeam.team.dto.SoccerTeamDto;
 import soccerTeam.dto.SoccerTeamFileDto;
@@ -38,8 +39,9 @@ public class RestSoccerTeamController {
 
     @Operation(summary = "게시판 목록 조회", description = "등록된 게시물 목록을 조회해서 반환합니다.")
     @GetMapping
-    public ApiResponse<List<SoccerTeamEntity>> getAllSoccerTeams() {
-        return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_LIST_SUCCESS, soccerTeamService.selectSoccerTeamList());
+    public ApiResponse<List<SoccerTeamListResponseDto>> getAllSoccerTeams() {
+        List<SoccerTeamListResponseDto> response = soccerTeamService.selectSoccerTeamListDto();
+        return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_LIST_SUCCESS, response);
     }
     
     @Operation(summary = "게시판 등록", description = "게시물 제목과 내용을 저장합니다.")
