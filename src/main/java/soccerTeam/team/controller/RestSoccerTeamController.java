@@ -30,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 import soccerTeam.dto.PlayerDto;
 import soccerTeam.dto.SoccerTeamDto;
 import soccerTeam.dto.SoccerTeamFileDto;
+import soccerTeam.security.LoginMember;
 import soccerTeam.team.dto.request.SoccerTeamInsertRequest;
 import soccerTeam.team.service.SoccerTeamService;
 import soccerTeam.team.repository.SoccerTeamEntity;

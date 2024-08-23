@@ -54,14 +54,11 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authz -> authz
                     .requestMatchers(
                             "/**",
-                            "/login",
                             "/loginProc",
                             "/join",
                             "/joinProc",
                             "/home",
-                            "/api/join",
-                            "/api/login",
-                            "/api/soccerTeam/**"
+                            "/api/join"
                     ).permitAll()
                 .anyRequest().authenticated()
                 )

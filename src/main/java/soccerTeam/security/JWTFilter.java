@@ -30,6 +30,10 @@ public class JWTFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        if (checkPassUri(request)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         //request에서 Authorization 헤더를 찾음
         String authorization= request.getHeader("Authorization");
@@ -46,6 +50,7 @@ public class JWTFilter extends OncePerRequestFilter {
         System.out.println("authorization now");
         //Bearer 부분 제거 후 순수 토큰만 획득
         String token = authorization.split(" ")[1];
+        System.out.println(authorization);
 
         //토큰 소멸 시간 검증
         if (jwtUtils.isExpired(token)) {
@@ -75,5 +80,11 @@ public class JWTFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
         filterChain.doFilter(request, response);
+    }
+
+    private Boolean checkPassUri(HttpServletRequest request) {
+        return request.getMethod().equals("GET")
+                || request.getRequestURI().startsWith("/api/join")
+                || request.getRequestURI().startsWith("/login");
     }
 }
