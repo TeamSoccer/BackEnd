@@ -40,7 +40,7 @@ public class RestSoccerTeamController {
     @Operation(summary = "게시판 목록 조회", description = "등록된 게시물 목록을 조회해서 반환합니다.")
     @GetMapping
     public ApiResponse<List<SoccerTeamListResponseDto>> getAllSoccerTeams() {
-        List<SoccerTeamListResponseDto> response = soccerTeamService.selectSoccerTeamListDto();
+        List<SoccerTeamListResponseDto> response = soccerTeamService.selectSoccerTeamList();
         return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_LIST_SUCCESS, response);
     }
     

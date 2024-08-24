@@ -38,12 +38,7 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
     private final FileUtils fileUtils;
 
     @Override
-    public List<SoccerTeamEntity> selectSoccerTeamList() {
-        return soccerTeamRepository.findAll();
-    }
-
-    @Override
-    public List<SoccerTeamListResponseDto> selectSoccerTeamListDto() {
+    public List<SoccerTeamListResponseDto> selectSoccerTeamList() {
         return soccerTeamRepository.findAll().stream()
                 .map(team -> new SoccerTeamListResponseDto(
                         team.getId(),

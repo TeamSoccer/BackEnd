@@ -15,9 +15,7 @@ import soccerTeam.team.repository.SoccerTeamEntity;
 @Service
 public interface SoccerTeamService {
 	
-	List<SoccerTeamEntity> selectSoccerTeamList();
-
-	List<SoccerTeamListResponseDto> selectSoccerTeamListDto();
+	List<SoccerTeamListResponseDto> selectSoccerTeamList();
 
 	void insertSoccerTeam(SoccerTeamInsertRequest soccerTeamInsertRequest, MultipartFile[] files);
 	
