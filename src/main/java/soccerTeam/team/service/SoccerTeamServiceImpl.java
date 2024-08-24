@@ -40,16 +40,7 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
     @Override
     public List<SoccerTeamListResponseDto> selectSoccerTeamList() {
         return soccerTeamRepository.findAll().stream()
-                .map(team -> new SoccerTeamListResponseDto(
-                        team.getId(),
-                        team.getTitle(),
-                        team.getName(),
-                        team.getRegion(),
-                        team.getDay(),
-                        team.getStartTime(),
-                        team.getEndTime(),
-                        team.getCreatedAt(),
-                        team.getUpdatedAt()))
+                .map(SoccerTeamEntity::toDto)
                 .collect(Collectors.toList());
     }
 
