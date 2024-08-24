@@ -1,5 +1,6 @@
 package soccerTeam.player.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class RestJoinController {
     private final JoinService joinService;
 
     @PostMapping
-    public ApiResponse<PlayerSimpleResponse> join(@RequestBody JoinDto joinDto) {
+    public ApiResponse<PlayerSimpleResponse> join(@Valid @RequestBody JoinDto joinDto) {
         PlayerSimpleResponse response = joinService.joinProcess(joinDto);
         return ApiResponse.success(PlayerSuccessType.JOIN_SUCCESS, response);
     }

@@ -1,5 +1,6 @@
 package soccerTeam.enroll.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,7 @@ public class EnrollController {
     private final EnrollService enrollService;
 
     @PostMapping
-    public ApiResponse<EnrollCreateResponse> create(@RequestBody EnrollCreateRequest enrollCreateRequest) {
+    public ApiResponse<EnrollCreateResponse> create(@Valid @RequestBody EnrollCreateRequest enrollCreateRequest) {
         return ApiResponse.success(EnrollSuccessType.CREATE_SUCCESS, enrollService.create(enrollCreateRequest));
     }
 }

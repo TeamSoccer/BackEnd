@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +48,7 @@ public class RestSoccerTeamController {
     @Parameter(name = "soccerTeamDto", description = "게시물 정보를 담고 있는 객체", required = true)
     @PostMapping("/write")
     public ResponseEntity<Void> insertSoccerTeam(
+            @Valid
             @ModelAttribute SoccerTeamInsertRequest soccerTeamInsertRequest,
             @RequestParam(value = "files", required = false) MultipartFile[] files) {
         try {
@@ -81,7 +83,7 @@ public class RestSoccerTeamController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateSoccerTeam(@RequestBody SoccerTeamDto soccerTeamDto) {
+    public ResponseEntity<Void> updateSoccerTeam(@Valid @RequestBody SoccerTeamDto soccerTeamDto) {
         soccerTeamService.updateSoccerTeam(soccerTeamDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
