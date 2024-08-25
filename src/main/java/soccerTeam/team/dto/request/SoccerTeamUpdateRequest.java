@@ -16,7 +16,7 @@ public record SoccerTeamUpdateRequest(
         @NotBlank(message = "활동지역을 입력해주세요.")
         String region,
 
-        @Pattern(regexp = "^[0-9]{10,15}$", message = "전화번호를 입력해주세요. 전화번호는 10자리에서 15자리 사이입니다.")
+        @Pattern(regexp = "^\\d{3}-\\d{4}-\\d{4}$", message = "전화번호는 000-0000-0000 형식이어야 합니다.")
         String phoneNumber,
 
         Integer period,
