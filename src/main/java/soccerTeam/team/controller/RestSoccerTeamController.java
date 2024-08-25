@@ -83,7 +83,7 @@ public class RestSoccerTeamController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateSoccerTeam(@Valid @RequestBody SoccerTeamDto soccerTeamDto) {
+    public ResponseEntity<Void> updateSoccerTeam(@RequestBody SoccerTeamDto soccerTeamDto) {
         soccerTeamService.updateSoccerTeam(soccerTeamDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
