@@ -13,6 +13,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import soccerTeam.dto.SoccerTeamListResponseDto;
 import soccerTeam.team.dto.SoccerTeamDto;
 import soccerTeam.dto.SoccerTeamFileDto;
 import soccerTeam.player.dto.response.PlayerProfileResponse;
@@ -164,6 +165,20 @@ public class SoccerTeamEntity {
 				createdAt,
 				updatedAt,
 				files
+		);
+	}
+
+	public SoccerTeamListResponseDto toDto() {
+		return new SoccerTeamListResponseDto(
+				this.getId(),
+				this.getTitle(),
+				this.getName(),
+				this.getRegion(),
+				this.getDay(),
+				this.getStartTime(),
+				this.getEndTime(),
+				this.getCreatedAt(),
+				this.getUpdatedAt()
 		);
 	}
 }
