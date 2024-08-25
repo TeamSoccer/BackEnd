@@ -1,6 +1,7 @@
 package soccerTeam.dto;
 
 import lombok.Data;
+import soccerTeam.team.repository.SoccerTeamEntity;
 
 @Data
 public class SoccerTeamListResponse {

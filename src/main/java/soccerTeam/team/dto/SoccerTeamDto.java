@@ -1,4 +1,4 @@
-package soccerTeam.dto;
+package soccerTeam.team.dto;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -7,6 +7,7 @@ import java.util.List;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
+import soccerTeam.dto.SoccerTeamFileDto;
 import soccerTeam.player.dto.response.PlayerProfileResponse;
 
 @Data

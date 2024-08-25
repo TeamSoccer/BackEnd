@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +20,12 @@ import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import soccerTeam.dto.ApiResponse;
-import soccerTeam.dto.PlayerDto;
-import soccerTeam.dto.SoccerTeamDto;
-import soccerTeam.dto.SoccerTeamFileDto;
+import soccerTeam.dto.SoccerTeamListResponseDto;
 import soccerTeam.security.LoginMember;
+import soccerTeam.team.dto.SoccerTeamDto;
+import soccerTeam.dto.SoccerTeamFileDto;
 import soccerTeam.team.dto.request.SoccerTeamInsertRequest;
+import soccerTeam.team.dto.request.SoccerTeamUpdateRequest;
 import soccerTeam.team.service.SoccerTeamService;
 import soccerTeam.team.repository.SoccerTeamEntity;
 import soccerTeam.type.soccerTeam.SoccerTeamSuccessType;
@@ -40,8 +40,9 @@ public class RestSoccerTeamController {
 
     @Operation(summary = "게시판 목록 조회", description = "등록된 게시물 목록을 조회해서 반환합니다.")
     @GetMapping
-    public ApiResponse<List<SoccerTeamEntity>> getAllSoccerTeams() {
-        return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_LIST_SUCCESS, soccerTeamService.selectSoccerTeamList());
+    public ApiResponse<List<SoccerTeamListResponseDto>> getAllSoccerTeams() {
+        List<SoccerTeamListResponseDto> response = soccerTeamService.selectSoccerTeamList();
+        return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_LIST_SUCCESS, response);
     }
     
     @Operation(summary = "게시판 등록", description = "게시물 제목과 내용을 저장합니다.")
@@ -83,9 +84,11 @@ public class RestSoccerTeamController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateSoccerTeam(@RequestBody SoccerTeamDto soccerTeamDto) {
-        soccerTeamService.updateSoccerTeam(soccerTeamDto);
-        return ResponseEntity.status(HttpStatus.OK).build();
+    public ApiResponse<?> updateSoccerTeam(
+            @LoginMember String username,
+            @RequestBody SoccerTeamUpdateRequest updateRequest) {
+        soccerTeamService.updateSoccerTeam(username, updateRequest);
+        return ApiResponse.success(SoccerTeamSuccessType.UPDATE_SOCCER_TEAM_SUCCESS);
     }
 
     @DeleteMapping("/{teamIdx}")

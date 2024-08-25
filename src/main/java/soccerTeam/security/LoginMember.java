@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-@AuthenticationPrincipal(expression = "id == null ? 0L : id")
+@AuthenticationPrincipal(expression = "username == null ? '' : username")
 public @interface LoginMember {}

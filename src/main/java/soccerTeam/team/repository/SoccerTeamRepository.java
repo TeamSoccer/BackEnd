@@ -1,6 +1,7 @@
 package soccerTeam.team.repository;
 
-import soccerTeam.dto.SoccerTeamDto;
+import soccerTeam.team.SoccerTeamUpdateDto;
+import soccerTeam.team.dto.SoccerTeamDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +15,7 @@ public interface SoccerTeamRepository {
 
     Optional<SoccerTeamEntity> findById(Long id);
 
-    Optional<SoccerTeamEntity> update(SoccerTeamDto soccerTeamDto);
+    Optional<SoccerTeamEntity> update(String username, SoccerTeamUpdateDto soccerTeamDto);
 
     void deleteById(Long id);
 }
