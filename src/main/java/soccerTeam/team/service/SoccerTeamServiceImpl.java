@@ -23,6 +23,7 @@ import soccerTeam.team.dto.request.SoccerTeamInsertRequest;
 import soccerTeam.team.dto.request.SoccerTeamUpdateRequest;
 import soccerTeam.team.repository.SoccerTeamEntity;
 import soccerTeam.team.repository.SoccerTeamRepository;
+import soccerTeam.type.player.PlayerErrorType;
 import soccerTeam.type.soccerTeam.SoccerTeamErrorType;
 
 @Slf4j
@@ -42,10 +43,9 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
 
     @Override
     @Transactional
-    public void insertSoccerTeam(SoccerTeamInsertRequest soccerTeamInsertRequest, MultipartFile[] files) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    public void insertSoccerTeam(String username, SoccerTeamInsertRequest soccerTeamInsertRequest, MultipartFile[] files) {
         PlayerEntity player = playerRepository.findByUsername(username)
-                .orElseThrow();
+                .orElseThrow(() -> new NotFoundException(PlayerErrorType.PLAYER_NOT_FOUND));
         SoccerTeamEntity soccerTeamEntity = soccerTeamRepository
                 .save(SoccerTeamEntity.from(soccerTeamInsertRequest, player));
 
@@ -56,13 +56,10 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
         if (CollectionUtils.isEmpty(fileInfoList)) {
             return;
         }
-        List<SoccerTeamFileEntity> fileList = fileInfoList.stream().map(file -> SoccerTeamFileEntity.builder()
-                .soccerTeam(soccerTeamEntity)
-                .originImageName(file.getOriginImageName())
-                .imageUrl(file.getImageUrl())
-                .size(file.getSize())
-                .build()
-        ).toList();
+        List<SoccerTeamFileEntity> fileList = fileInfoList
+                .stream()
+                .map(file -> SoccerTeamFileEntity.from(file, soccerTeamEntity))
+                .toList();
         soccerTeamFileRepository.saveAll(fileList);
     }
 
