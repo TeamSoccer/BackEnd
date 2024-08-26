@@ -17,7 +17,7 @@ public interface SoccerTeamService {
 	
 	List<SoccerTeamListResponseDto> selectSoccerTeamList();
 
-	void insertSoccerTeam(SoccerTeamInsertRequest soccerTeamInsertRequest, MultipartFile[] files);
+	void insertSoccerTeam(String username, SoccerTeamInsertRequest soccerTeamInsertRequest, MultipartFile[] files);
 	
 	void updateSoccerTeam(String username, SoccerTeamUpdateRequest updateRequest);
 

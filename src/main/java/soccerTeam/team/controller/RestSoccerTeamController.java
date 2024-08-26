@@ -28,6 +28,7 @@ import soccerTeam.team.dto.request.SoccerTeamInsertRequest;
 import soccerTeam.team.dto.request.SoccerTeamUpdateRequest;
 import soccerTeam.team.service.SoccerTeamService;
 import soccerTeam.team.repository.SoccerTeamEntity;
+import soccerTeam.type.soccerTeam.SoccerTeamErrorType;
 import soccerTeam.type.soccerTeam.SoccerTeamSuccessType;
 
 @Slf4j
@@ -48,21 +49,17 @@ public class RestSoccerTeamController {
     @Operation(summary = "게시판 등록", description = "게시물 제목과 내용을 저장합니다.")
     @Parameter(name = "soccerTeamDto", description = "게시물 정보를 담고 있는 객체", required = true)
     @PostMapping("/write")
-    public ResponseEntity<Void> insertSoccerTeam(
-            @Valid
-            @ModelAttribute SoccerTeamInsertRequest soccerTeamInsertRequest,
-            @RequestParam(value = "files", required = false) MultipartFile[] files) {
-        try {
-            // 로깅 추가
-            System.out.println("Received data: " + soccerTeamInsertRequest);
-            System.out.println("Received files: " + (files != null ? files.length : "No files"));
+    public ApiResponse<?> insertSoccerTeam(
+            @LoginMember String username,
+            @Valid @ModelAttribute SoccerTeamInsertRequest soccerTeamInsertRequest,
+            @RequestPart(value = "files", required = false) MultipartFile[] files) {
 
-            soccerTeamService.insertSoccerTeam(soccerTeamInsertRequest, files);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (Exception e) {
-            e.printStackTrace(); // 예외 로그 출력
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        // 로깅 추가
+        System.out.println("Received data: " + soccerTeamInsertRequest);
+        System.out.println("Received files: " + (files != null ? files.length : "No files"));
+
+        soccerTeamService.insertSoccerTeam(username, soccerTeamInsertRequest, files);
+        return ApiResponse.success(SoccerTeamSuccessType.CREATE_SOCCER_TEAM_SUCCESS);
     }
 
     @GetMapping("/{teamIdx}")
