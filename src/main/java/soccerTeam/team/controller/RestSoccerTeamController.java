@@ -20,15 +20,13 @@ import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import soccerTeam.dto.ApiResponse;
-import soccerTeam.dto.SoccerTeamListResponseDto;
+import soccerTeam.team.dto.response.SoccerTeamListResponseDto;
 import soccerTeam.security.LoginMember;
 import soccerTeam.team.dto.SoccerTeamDto;
-import soccerTeam.dto.SoccerTeamFileDto;
+import soccerTeam.team.dto.SoccerTeamFileDto;
 import soccerTeam.team.dto.request.SoccerTeamInsertRequest;
 import soccerTeam.team.dto.request.SoccerTeamUpdateRequest;
 import soccerTeam.team.service.SoccerTeamService;
-import soccerTeam.team.repository.SoccerTeamEntity;
-import soccerTeam.type.soccerTeam.SoccerTeamErrorType;
 import soccerTeam.type.soccerTeam.SoccerTeamSuccessType;
 
 @Slf4j
@@ -65,7 +63,7 @@ public class RestSoccerTeamController {
 
 
     @GetMapping("/{teamIdx}")
-    public ApiResponse<SoccerTeamDto> getSoccerTeamDetail(@PathVariable("teamIdx") Long teamIdx) throws Exception {
+    public ApiResponse<SoccerTeamDto> getSoccerTeamDetail(@PathVariable("teamIdx") Long teamIdx) {
         SoccerTeamDto soccerTeamDtoResult = soccerTeamService.selectSoccerTeamDetail(teamIdx);
         return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_SUCCESS, soccerTeamDtoResult);
     }
@@ -73,8 +71,9 @@ public class RestSoccerTeamController {
     @PutMapping
     public ApiResponse<?> updateSoccerTeam(
             @LoginMember String username,
-            @Valid @RequestBody SoccerTeamUpdateRequest updateRequest) {
-        soccerTeamService.updateSoccerTeam(username, updateRequest);
+            @Valid @RequestPart(value = "data") SoccerTeamUpdateRequest updateRequest,
+            @RequestPart(value = "files", required = false) MultipartFile[] files) {
+        soccerTeamService.updateSoccerTeam(username, updateRequest, files);
         return ApiResponse.success(SoccerTeamSuccessType.UPDATE_SOCCER_TEAM_SUCCESS);
     }
 

@@ -1,4 +1,4 @@
-package soccerTeam.dto;
+package soccerTeam.team.dto;
 
 import lombok.Builder;
 import lombok.Data;

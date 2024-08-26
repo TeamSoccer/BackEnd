@@ -1,4 +1,4 @@
-package soccerTeam.dto;
+package soccerTeam.player.dto;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;

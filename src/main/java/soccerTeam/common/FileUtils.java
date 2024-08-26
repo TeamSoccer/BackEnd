@@ -5,20 +5,15 @@ import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import soccerTeam.dto.SoccerTeamFileDto;
-import soccerTeam.exception.BadRequestException;
+import soccerTeam.team.dto.SoccerTeamFileDto;
 import soccerTeam.exception.InternalServerException;
-import soccerTeam.image.repository.SoccerTeamFileEntity;
 import soccerTeam.type.common.CommonErrorType;
 
 @Component
