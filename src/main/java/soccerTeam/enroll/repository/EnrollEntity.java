@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import soccerTeam.enroll.dto.EnrollCreateRequest;
 import soccerTeam.player.repository.PlayerEntity;
 import soccerTeam.team.repository.SoccerTeamEntity;
 
@@ -60,5 +61,17 @@ public class EnrollEntity {
         this.hitCnt = hitCnt;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public static EnrollEntity from(PlayerEntity player, SoccerTeamEntity soccerTeam, EnrollCreateRequest enrollCreateRequest) {
+        return EnrollEntity.builder()
+                .team(soccerTeam)
+                .player(player)
+                .title(enrollCreateRequest.title())
+                .content(enrollCreateRequest.content())
+                .hitCnt(0)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
     }
 }
