@@ -10,10 +10,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import soccerTeam.dto.SoccerTeamFileDto;
@@ -39,12 +37,12 @@ public class SoccerTeamFileEntity {
 	@Column(nullable = false)
 	private Long size;
 
+	@Column
 	@CreatedDate
-	@Column(nullable = false)
 	private LocalDateTime createdAt;
 
+	@Column
 	@LastModifiedDate
-	@Column(nullable = false)
 	private LocalDateTime updatedAt;
 
 	@Builder
@@ -73,6 +71,17 @@ public class SoccerTeamFileEntity {
 				.size(size)
 				.createdAt(createdAt)
 				.updatedAt(updatedAt)
+				.build();
+	}
+
+	public static SoccerTeamFileEntity from(SoccerTeamFileDto soccerTeamFileDto, SoccerTeamEntity soccerTeamEntity) {
+		return SoccerTeamFileEntity.builder()
+				.soccerTeam(soccerTeamEntity)
+				.originImageName(soccerTeamFileDto.getOriginImageName())
+				.imageUrl(soccerTeamFileDto.getImageUrl())
+				.size(soccerTeamFileDto.getSize())
+				.createdAt(LocalDateTime.now())
+				.updatedAt(LocalDateTime.now())
 				.build();
 	}
 }
