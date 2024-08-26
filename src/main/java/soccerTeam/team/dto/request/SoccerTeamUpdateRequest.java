@@ -9,7 +9,7 @@ import java.time.LocalTime;
 @Schema(description = "축구 팀 수정 요청 객체")
 public record SoccerTeamUpdateRequest(
 
-        @Schema(description = "팀 ID", example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        @Schema(description = "팀 ID", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
         Long id,
 
         @NotBlank(message = "제목을 입력해주세요.")
