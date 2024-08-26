@@ -27,7 +27,7 @@ public record SoccerTeamUpdateDto(
                 request.region(),
                 request.phoneNumber(),
                 request.period(),
-                request.day(),
+                request.day().toString().replace("[", "").replace("]", ""),
                 request.startTime(),
                 request.endTime(),
                 request.ageAverage(),
