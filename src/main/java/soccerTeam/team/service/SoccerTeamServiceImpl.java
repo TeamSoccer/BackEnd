@@ -83,6 +83,7 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
         List<SoccerTeamFileEntity> soccerTeamFileInfo = soccerTeamFileRepository.findByTeamId(teamIdx);
         List<SoccerTeamFileDto> files = soccerTeamFileInfo.stream().map(file ->
                 SoccerTeamFileDto.builder()
+                        .id(file.getId())
                         .teamId(file.getSoccerTeam().getId())
                         .originImageName(file.getOriginImageName())
                         .imageUrl(file.getImageUrl())

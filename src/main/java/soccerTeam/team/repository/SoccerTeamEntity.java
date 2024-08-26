@@ -69,7 +69,7 @@ public class SoccerTeamEntity {
 	@Column
 	private Integer athleteCnt;
 
-	@Column(nullable = false)
+	@Column
 	private String contents;
 	
 	@Column
@@ -132,7 +132,7 @@ public class SoccerTeamEntity {
 				.region(request.getRegion())
 				.phoneNumber(request.getPhoneNumber())
 				.period(request.getPeriod())
-				.day(request.getDay().toString().replace("[", "").replace("]", ""))
+				.day(getDay(request.getDay()))
 				.startTime(request.getStartTime())
 				.endTime(request.getEndTime())
 				.ageAverage(request.getAgeAverage())
@@ -142,6 +142,12 @@ public class SoccerTeamEntity {
 				.contents(request.getContents())
 				.hitCnt(0)
 				.build();
+	}
+
+	private static String getDay(List<String> day) {
+		return day != null
+				? day.toString().replace("[", "").replace("]", "")
+				: "";
 	}
 
 	public SoccerTeamDto toModel(List<SoccerTeamFileDto> files) {
