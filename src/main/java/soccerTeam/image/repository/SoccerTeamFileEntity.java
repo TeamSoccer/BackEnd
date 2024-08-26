@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import soccerTeam.dto.SoccerTeamFileDto;
@@ -19,6 +20,7 @@ import soccerTeam.team.repository.SoccerTeamEntity;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class SoccerTeamFileEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

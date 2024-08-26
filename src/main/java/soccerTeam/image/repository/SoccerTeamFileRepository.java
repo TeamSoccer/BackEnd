@@ -9,4 +9,6 @@ public interface SoccerTeamFileRepository {
     List<SoccerTeamFileEntity> findByTeamId(Long teamId);
 
     Optional<SoccerTeamFileEntity> findById(Long id);
+
+    void deleteByTeamId(Long teamIdx);
 }

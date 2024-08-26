@@ -25,4 +25,9 @@ public class SoccerTeamFileRepositoryImpl implements SoccerTeamFileRepository {
     public Optional<SoccerTeamFileEntity> findById(Long id) {
         return jpaSoccerTeamFileRepository.findById(id);
     }
+
+    @Override
+    public void deleteByTeamId(Long teamIdx) {
+        jpaSoccerTeamFileRepository.deleteByTeamId(teamIdx);
+    }
 }
