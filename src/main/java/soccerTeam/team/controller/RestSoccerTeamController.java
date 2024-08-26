@@ -51,7 +51,7 @@ public class RestSoccerTeamController {
     @PostMapping("/write")
     public ApiResponse<?> insertSoccerTeam(
             @LoginMember String username,
-            @Valid @ModelAttribute SoccerTeamInsertRequest soccerTeamInsertRequest,
+            @Valid @RequestPart(value = "data") SoccerTeamInsertRequest soccerTeamInsertRequest,
             @RequestPart(value = "files", required = false) MultipartFile[] files) {
 
         // 로깅 추가
@@ -65,22 +65,10 @@ public class RestSoccerTeamController {
 
 
     @GetMapping("/{teamIdx}")
-            public ApiResponse<SoccerTeamDto> getSoccerTeamDetail(@PathVariable("teamIdx") Long teamIdx) throws Exception {
-                SoccerTeamDto soccerTeamDtoResult = soccerTeamService.selectSoccerTeamDetail(teamIdx);
-//        if (soccerTeamDtoResult == null) {
-//            Map<String, Object> result = new HashMap<>();
-//            result.put("code", HttpStatus.NOT_FOUND.toString());
-//            result.put("message", "일치하는 팀이 존재하지 않습니다.");
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
-//        } else {
-//            List<PlayerDto> playerList = playerService.selectPlayersByTeamIdx(teamIdx);
-//            Map<String, Object> response = new HashMap<>();
-//            response.put("soccerTeam", soccerTeamDtoResult);
-//            response.put("playerList", playerList);
-//            return ResponseEntity.status(HttpStatus.OK).body(response);
-//        }
-                return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_SUCCESS, soccerTeamDtoResult);
-            }
+    public ApiResponse<SoccerTeamDto> getSoccerTeamDetail(@PathVariable("teamIdx") Long teamIdx) throws Exception {
+        SoccerTeamDto soccerTeamDtoResult = soccerTeamService.selectSoccerTeamDetail(teamIdx);
+        return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_SUCCESS, soccerTeamDtoResult);
+    }
 
             @PutMapping
             public ApiResponse<?> updateSoccerTeam(

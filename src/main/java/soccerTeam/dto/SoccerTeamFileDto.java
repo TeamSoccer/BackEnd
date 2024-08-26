@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class SoccerTeamFileDto {
+	private Long id;
 	private Long teamId;
 	private String originImageName;
 	private String imageUrl;
@@ -16,12 +17,14 @@ public class SoccerTeamFileDto {
 
 	@Builder
 	public SoccerTeamFileDto(
+			Long id,
 			Long teamId,
 			String originImageName,
 			String imageUrl,
 			Long size,
 			LocalDateTime createdAt,
 			LocalDateTime updatedAt) {
+		this.id = id;
 		this.teamId = teamId;
 		this.originImageName = originImageName;
 		this.imageUrl = imageUrl;
