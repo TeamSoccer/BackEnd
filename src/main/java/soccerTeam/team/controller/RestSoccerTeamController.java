@@ -71,7 +71,7 @@ public class RestSoccerTeamController {
     @PutMapping
     public ApiResponse<?> updateSoccerTeam(
             @LoginMember String username,
-            @RequestBody SoccerTeamUpdateRequest updateRequest) {
+            @Valid @RequestBody SoccerTeamUpdateRequest updateRequest) {
         soccerTeamService.updateSoccerTeam(username, updateRequest);
         return ApiResponse.success(SoccerTeamSuccessType.UPDATE_SOCCER_TEAM_SUCCESS);
     }

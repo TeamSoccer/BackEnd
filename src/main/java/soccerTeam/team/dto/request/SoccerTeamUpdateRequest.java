@@ -2,13 +2,16 @@ package soccerTeam.team.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalTime;
+import java.util.List;
 
 @Schema(description = "축구 팀 수정 요청 객체")
 public record SoccerTeamUpdateRequest(
 
+        @NotNull
         @Schema(description = "팀 ID", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
         Long id,
 
@@ -34,7 +37,7 @@ public record SoccerTeamUpdateRequest(
 
         @NotBlank(message = "활동 요일을 선택해주세요.")
         @Schema(description = "수정할 활동 요일", example = "화,목", requiredMode = Schema.RequiredMode.REQUIRED)
-        String day,
+        List<String> day,
 
         @NotBlank(message = "활동 시작 시간을 입력해주세요.")
         @Schema(description = "수정할 활동 시작 시간", example = "20:00", requiredMode = Schema.RequiredMode.REQUIRED)
