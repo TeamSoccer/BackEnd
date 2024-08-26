@@ -63,6 +63,7 @@ public class RestSoccerTeamController {
     }
 
 
+
     @GetMapping("/{teamIdx}")
             public ApiResponse<SoccerTeamDto> getSoccerTeamDetail(@PathVariable("teamIdx") Long teamIdx) throws Exception {
                 SoccerTeamDto soccerTeamDtoResult = soccerTeamService.selectSoccerTeamDetail(teamIdx);
