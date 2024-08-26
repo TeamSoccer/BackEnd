@@ -1,4 +1,4 @@
-package soccerTeam.dto;
+package soccerTeam.team.dto.response;
 
 import lombok.Data;
 

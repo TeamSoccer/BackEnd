@@ -4,9 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import soccerTeam.dto.JoinDto;
+import soccerTeam.player.dto.request.JoinDto;
 import soccerTeam.exception.BadRequestException;
-import soccerTeam.player.dto.response.PlayerProfileResponse;
 import soccerTeam.player.dto.response.PlayerSimpleResponse;
 import soccerTeam.player.repository.PlayerEntity;
 import soccerTeam.player.repository.PlayerRepository;
