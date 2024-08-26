@@ -10,6 +10,7 @@ import soccerTeam.dto.ApiResponse;
 import soccerTeam.enroll.dto.EnrollCreateRequest;
 import soccerTeam.enroll.dto.EnrollCreateResponse;
 import soccerTeam.enroll.service.EnrollService;
+import soccerTeam.security.LoginMember;
 import soccerTeam.type.enroll.EnrollSuccessType;
 
 @RestController
@@ -18,8 +19,11 @@ import soccerTeam.type.enroll.EnrollSuccessType;
 public class EnrollController {
     private final EnrollService enrollService;
 
-    @PostMapping("/write")
-    public ApiResponse<EnrollCreateResponse> create(@Valid @RequestBody EnrollCreateRequest enrollCreateRequest) {
-        return ApiResponse.success(EnrollSuccessType.CREATE_SUCCESS, enrollService.create(enrollCreateRequest));
+    @PostMapping
+    public ApiResponse<EnrollCreateResponse> create(
+            @LoginMember String username,
+            @Valid @RequestBody EnrollCreateRequest enrollCreateRequest) {
+        EnrollCreateResponse response = enrollService.create(username, enrollCreateRequest);
+        return ApiResponse.success(EnrollSuccessType.CREATE_SUCCESS, response);
     }
 }
