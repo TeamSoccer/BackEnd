@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,8 +51,10 @@ public class RestSoccerTeamController {
     @PostMapping("/write")
     public ApiResponse<?> insertSoccerTeam(
             @LoginMember String username,
-            @RequestPart(value = "data") SoccerTeamInsertRequest soccerTeamInsertRequest,
+            @Valid @ModelAttribute SoccerTeamInsertRequest soccerTeamInsertRequest,
             @RequestPart(value = "files", required = false) MultipartFile[] files) {
+
+        // 로깅 추가
         System.out.println("Received data: " + soccerTeamInsertRequest);
         System.out.println("Received files: " + (files != null ? files.length : "No files"));
 
