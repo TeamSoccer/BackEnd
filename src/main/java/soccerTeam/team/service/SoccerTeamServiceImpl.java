@@ -11,10 +11,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
 import soccerTeam.common.FileUtils;
-import soccerTeam.dto.SoccerTeamListResponseDto;
+import soccerTeam.team.dto.response.SoccerTeamListResponseDto;
 import soccerTeam.team.SoccerTeamUpdateDto;
 import soccerTeam.team.dto.SoccerTeamDto;
-import soccerTeam.dto.SoccerTeamFileDto;
+import soccerTeam.team.dto.SoccerTeamFileDto;
 import soccerTeam.exception.NotFoundException;
 import soccerTeam.image.repository.SoccerTeamFileEntity;
 import soccerTeam.image.repository.SoccerTeamFileRepository;
