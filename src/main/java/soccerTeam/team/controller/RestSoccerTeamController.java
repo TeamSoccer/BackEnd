@@ -28,6 +28,7 @@ import soccerTeam.team.dto.request.SoccerTeamInsertRequest;
 import soccerTeam.team.dto.request.SoccerTeamUpdateRequest;
 import soccerTeam.team.service.SoccerTeamService;
 import soccerTeam.team.repository.SoccerTeamEntity;
+import soccerTeam.type.soccerTeam.SoccerTeamErrorType;
 import soccerTeam.type.soccerTeam.SoccerTeamSuccessType;
 
 @Slf4j
@@ -44,30 +45,27 @@ public class RestSoccerTeamController {
         List<SoccerTeamListResponseDto> response = soccerTeamService.selectSoccerTeamList();
         return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_LIST_SUCCESS, response);
     }
-    
+
     @Operation(summary = "게시판 등록", description = "게시물 제목과 내용을 저장합니다.")
     @Parameter(name = "soccerTeamDto", description = "게시물 정보를 담고 있는 객체", required = true)
     @PostMapping("/write")
-    public ResponseEntity<Void> insertSoccerTeam(
-            @Valid
-            @ModelAttribute SoccerTeamInsertRequest soccerTeamInsertRequest,
-            @RequestParam(value = "files", required = false) MultipartFile[] files) {
-        try {
-            // 로깅 추가
-            System.out.println("Received data: " + soccerTeamInsertRequest);
-            System.out.println("Received files: " + (files != null ? files.length : "No files"));
+    public ApiResponse<?> insertSoccerTeam(
+            @LoginMember String username,
+            @Valid @ModelAttribute SoccerTeamInsertRequest soccerTeamInsertRequest,
+            @RequestPart(value = "files", required = false) MultipartFile[] files) {
 
-            soccerTeamService.insertSoccerTeam(soccerTeamInsertRequest, files);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (Exception e) {
-            e.printStackTrace(); // 예외 로그 출력
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        // 로깅 추가
+        System.out.println("Received data: " + soccerTeamInsertRequest);
+        System.out.println("Received files: " + (files != null ? files.length : "No files"));
+
+        soccerTeamService.insertSoccerTeam(username, soccerTeamInsertRequest, files);
+        return ApiResponse.success(SoccerTeamSuccessType.CREATE_SOCCER_TEAM_SUCCESS);
     }
 
+
     @GetMapping("/{teamIdx}")
-    public ApiResponse<SoccerTeamDto> getSoccerTeamDetail(@PathVariable("teamIdx") Long teamIdx) throws Exception {
-        SoccerTeamDto soccerTeamDtoResult = soccerTeamService.selectSoccerTeamDetail(teamIdx);
+            public ApiResponse<SoccerTeamDto> getSoccerTeamDetail(@PathVariable("teamIdx") Long teamIdx) throws Exception {
+                SoccerTeamDto soccerTeamDtoResult = soccerTeamService.selectSoccerTeamDetail(teamIdx);
 //        if (soccerTeamDtoResult == null) {
 //            Map<String, Object> result = new HashMap<>();
 //            result.put("code", HttpStatus.NOT_FOUND.toString());
@@ -80,40 +78,40 @@ public class RestSoccerTeamController {
 //            response.put("playerList", playerList);
 //            return ResponseEntity.status(HttpStatus.OK).body(response);
 //        }
-        return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_SUCCESS, soccerTeamDtoResult);
-    }
+                return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_SUCCESS, soccerTeamDtoResult);
+            }
 
-    @PutMapping
-    public ApiResponse<?> updateSoccerTeam(
-            @LoginMember String username,
-            @RequestBody SoccerTeamUpdateRequest updateRequest) {
-        soccerTeamService.updateSoccerTeam(username, updateRequest);
-        return ApiResponse.success(SoccerTeamSuccessType.UPDATE_SOCCER_TEAM_SUCCESS);
-    }
+            @PutMapping
+            public ApiResponse<?> updateSoccerTeam(
+                    @LoginMember String username,
+                    @RequestBody SoccerTeamUpdateRequest updateRequest) {
+                soccerTeamService.updateSoccerTeam(username, updateRequest);
+                return ApiResponse.success(SoccerTeamSuccessType.UPDATE_SOCCER_TEAM_SUCCESS);
+            }
 
-    @DeleteMapping("/{teamIdx}")
-    public ResponseEntity<Void> deleteSoccerTeam(@PathVariable("teamIdx") Long teamIdx) {
-        soccerTeamService.deleteSoccerTeam(teamIdx);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+            @DeleteMapping("/{teamIdx}")
+            public ResponseEntity<Void> deleteSoccerTeam(@PathVariable("teamIdx") Long teamIdx) {
+                soccerTeamService.deleteSoccerTeam(teamIdx);
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            }
 
-    @GetMapping("/file/{teamFileIdx}")
-    public void downloadSoccerTeamFile(@PathVariable("teamFileIdx") Long teamFileIdx, HttpServletResponse response) throws IOException {
-        SoccerTeamFileDto soccerTeamFileDto = soccerTeamService.selectSoccerTeamFileInfo(teamFileIdx);
-        if (ObjectUtils.isEmpty(soccerTeamFileDto)) {
-            return;
+            @GetMapping("/file/{teamFileIdx}")
+            public void downloadSoccerTeamFile(@PathVariable("teamFileIdx") Long teamFileIdx, HttpServletResponse response) throws IOException {
+                SoccerTeamFileDto soccerTeamFileDto = soccerTeamService.selectSoccerTeamFileInfo(teamFileIdx);
+                if (ObjectUtils.isEmpty(soccerTeamFileDto)) {
+                    return;
+                }
+
+                Path path = Paths.get(soccerTeamFileDto.getImageUrl());
+                byte[] file = Files.readAllBytes(path);
+
+                response.setContentType("application/octet-stream");
+                response.setContentLength(file.length);
+                response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(soccerTeamFileDto.getOriginImageName(), "UTF-8") + "\";");
+                response.setHeader("Content-Transfer-Encoding", "binary");
+
+                response.getOutputStream().write(file);
+                response.getOutputStream().flush();
+                response.getOutputStream().close();
+            }
         }
-
-        Path path = Paths.get(soccerTeamFileDto.getImageUrl());
-        byte[] file = Files.readAllBytes(path);
-
-        response.setContentType("application/octet-stream");
-        response.setContentLength(file.length);
-        response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(soccerTeamFileDto.getOriginImageName(), "UTF-8") + "\";");
-        response.setHeader("Content-Transfer-Encoding", "binary");
-
-        response.getOutputStream().write(file);
-        response.getOutputStream().flush();
-        response.getOutputStream().close();
-    }
-}
