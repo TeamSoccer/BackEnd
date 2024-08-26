@@ -19,7 +19,7 @@ public interface SoccerTeamService {
 
 	void insertSoccerTeam(String username, SoccerTeamInsertRequest soccerTeamInsertRequest, MultipartFile[] files);
 	
-	void updateSoccerTeam(String username, SoccerTeamUpdateRequest updateRequest);
+	void updateSoccerTeam(String username, SoccerTeamUpdateRequest updateRequest, MultipartFile[] files);
 
 	SoccerTeamDto selectSoccerTeamDetail(Long teamIdx);
 
