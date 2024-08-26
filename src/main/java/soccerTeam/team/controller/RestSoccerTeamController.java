@@ -70,37 +70,37 @@ public class RestSoccerTeamController {
         return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_SUCCESS, soccerTeamDtoResult);
     }
 
-            @PutMapping
-            public ApiResponse<?> updateSoccerTeam(
-                    @LoginMember String username,
-                    @RequestBody SoccerTeamUpdateRequest updateRequest) {
-                soccerTeamService.updateSoccerTeam(username, updateRequest);
-                return ApiResponse.success(SoccerTeamSuccessType.UPDATE_SOCCER_TEAM_SUCCESS);
-            }
+    @PutMapping
+    public ApiResponse<?> updateSoccerTeam(
+            @LoginMember String username,
+            @Valid @RequestBody SoccerTeamUpdateRequest updateRequest) {
+        soccerTeamService.updateSoccerTeam(username, updateRequest);
+        return ApiResponse.success(SoccerTeamSuccessType.UPDATE_SOCCER_TEAM_SUCCESS);
+    }
 
-            @DeleteMapping("/{teamIdx}")
-            public ResponseEntity<Void> deleteSoccerTeam(@PathVariable("teamIdx") Long teamIdx) {
-                soccerTeamService.deleteSoccerTeam(teamIdx);
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-            }
+    @DeleteMapping("/{teamIdx}")
+    public ResponseEntity<Void> deleteSoccerTeam(@PathVariable("teamIdx") Long teamIdx) {
+        soccerTeamService.deleteSoccerTeam(teamIdx);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 
-            @GetMapping("/file/{teamFileIdx}")
-            public void downloadSoccerTeamFile(@PathVariable("teamFileIdx") Long teamFileIdx, HttpServletResponse response) throws IOException {
-                SoccerTeamFileDto soccerTeamFileDto = soccerTeamService.selectSoccerTeamFileInfo(teamFileIdx);
-                if (ObjectUtils.isEmpty(soccerTeamFileDto)) {
-                    return;
-                }
-
-                Path path = Paths.get(soccerTeamFileDto.getImageUrl());
-                byte[] file = Files.readAllBytes(path);
-
-                response.setContentType("application/octet-stream");
-                response.setContentLength(file.length);
-                response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(soccerTeamFileDto.getOriginImageName(), "UTF-8") + "\";");
-                response.setHeader("Content-Transfer-Encoding", "binary");
-
-                response.getOutputStream().write(file);
-                response.getOutputStream().flush();
-                response.getOutputStream().close();
-            }
+    @GetMapping("/file/{teamFileIdx}")
+    public void downloadSoccerTeamFile(@PathVariable("teamFileIdx") Long teamFileIdx, HttpServletResponse response) throws IOException {
+        SoccerTeamFileDto soccerTeamFileDto = soccerTeamService.selectSoccerTeamFileInfo(teamFileIdx);
+        if (ObjectUtils.isEmpty(soccerTeamFileDto)) {
+            return;
         }
+
+        Path path = Paths.get(soccerTeamFileDto.getImageUrl());
+        byte[] file = Files.readAllBytes(path);
+
+        response.setContentType("application/octet-stream");
+        response.setContentLength(file.length);
+        response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(soccerTeamFileDto.getOriginImageName(), "UTF-8") + "\";");
+        response.setHeader("Content-Transfer-Encoding", "binary");
+
+        response.getOutputStream().write(file);
+        response.getOutputStream().flush();
+        response.getOutputStream().close();
+    }
+}
