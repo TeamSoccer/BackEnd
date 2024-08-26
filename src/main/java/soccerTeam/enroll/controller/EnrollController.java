@@ -18,7 +18,7 @@ import soccerTeam.type.enroll.EnrollSuccessType;
 public class EnrollController {
     private final EnrollService enrollService;
 
-    @PostMapping
+    @PostMapping("/write")
     public ApiResponse<EnrollCreateResponse> create(@Valid @RequestBody EnrollCreateRequest enrollCreateRequest) {
         return ApiResponse.success(EnrollSuccessType.CREATE_SUCCESS, enrollService.create(enrollCreateRequest));
     }

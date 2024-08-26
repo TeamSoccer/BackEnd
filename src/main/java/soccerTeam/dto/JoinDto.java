@@ -17,39 +17,40 @@ public class JoinDto {
 
     @NotBlank(message = "이름을 입력해주세요.")
     @Size(min = 3, max = 17, message = "이름은 실명으로 입력해주세요.")
-    @Schema(description = "사용자의 이름", example = "홍길동")
+    @Schema(description = "사용자의 이름", example = "홍길동", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     @NotBlank(message = "이메일을 입력해주세요.")
     @Email(message = "이메일 형식으로 입력해주세요.")
-    @Schema(description = "사용자의 이메일", example = "test@test.com")
+    @Schema(description = "사용자의 이메일", example = "test@test.com", requiredMode = Schema.RequiredMode.REQUIRED)
     private String email;
 
     @NotBlank(message = "ID를 입력해주세요.")
-    @Schema(description = "사용자의 아이디", example = "testid")
+    @Schema(description = "사용자의 아이디", example = "testid", requiredMode = Schema.RequiredMode.REQUIRED)
     private String username;
 
     @NotBlank(message = "비밀번호를 입력해주세요.")
-    @Schema(description = "사용자의 비밀번호", example = "testpassword")
+    @Schema(description = "사용자의 비밀번호", example = "testpassword", requiredMode = Schema.RequiredMode.REQUIRED)
     private String password;
 
     @NotBlank(message = "비밀번호를 확인해주세요.")
-    @Schema(description = "비밀번호 확인", example = "testpassword")
+    @Schema(description = "비밀번호 확인", example = "testpassword", requiredMode = Schema.RequiredMode.REQUIRED)
     private String passwordConfirm;
 
+    @NotBlank(message = "전화번호를 입력해주세요.")
     @Pattern(regexp = "^\\d{3}-\\d{4}-\\d{4}$", message = "전화번호는 000-0000-0000 형식이어야 합니다.")
-    @Schema(description = "전화번호", example = "010-1234-5678")
+    @Schema(description = "전화번호", example = "010-1234-5678", requiredMode = Schema.RequiredMode.REQUIRED)
     private String phoneNumber;
 
     @NotNull(message = "나이를 입력해주세요.")
     @Size(min = 10, max = 100, message = "올바른 나이를 입력해주세요.")
-    @Schema(description = "사용자의 나이", example = "29")
+    @Schema(description = "사용자의 나이", example = "29", requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer age;
 
-    @Schema(description = "사용자의 구력", example = "5")
+    @Schema(description = "사용자의 구력", example = "5", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer period;
 
-    @Schema(description = "선출 여부", example = "true")
+    @Schema(description = "선출 여부", example = "true", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean athlete;
 
     @Builder
