@@ -1,21 +1,21 @@
 package soccerTeam.team.dto.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import soccerTeam.team.repository.SoccerTeamEntity;
-
-import java.sql.Time;
 import java.time.LocalTime;
+import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class SoccerTeamInsertRequest {
     private String title;
     private String name;
     private String region;
     private String phoneNumber;
     private Integer period;
-    private String day;
+    private List<String> day;
     private LocalTime startTime;
     private LocalTime endTime;
     private Integer ageAverage;

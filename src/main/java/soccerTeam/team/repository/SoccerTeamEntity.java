@@ -132,7 +132,7 @@ public class SoccerTeamEntity {
 				.region(request.getRegion())
 				.phoneNumber(request.getPhoneNumber())
 				.period(request.getPeriod())
-				.day(request.getDay())
+				.day(request.getDay().toString().replace("[", "").replace("]", ""))
 				.startTime(request.getStartTime())
 				.endTime(request.getEndTime())
 				.ageAverage(request.getAgeAverage())
