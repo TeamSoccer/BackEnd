@@ -2,6 +2,7 @@ package soccerTeam.team.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,15 +36,15 @@ public class SoccerTeamInsertRequest {
     @Schema(description = "운영 기간", example = "10", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer period;
 
-    @NotBlank(message = "활동 요일을 선택해주세요.")
+    @NotNull(message = "활동 요일을 선택해주세요.")
     @Schema(description = "활동 요일", example = "월,수,금", requiredMode = Schema.RequiredMode.REQUIRED)
     private List<String> day;
 
-    @NotBlank(message = "활동 시작 시간을 입력해주세요.")
+    @NotNull(message = "활동 시작 시간을 입력해주세요.")
     @Schema(description = "활동 시작 시간", example = "18:00", requiredMode = Schema.RequiredMode.REQUIRED)
     private LocalTime startTime;
 
-    @NotBlank(message = "활동 종료 시간을 입력해주세요.")
+    @NotNull(message = "활동 종료 시간을 입력해주세요.")
     @Schema(description = "활동 종료 시간", example = "20:00", requiredMode = Schema.RequiredMode.REQUIRED)
     private LocalTime endTime;
 

@@ -35,15 +35,15 @@ public record SoccerTeamUpdateRequest(
         @Schema(description = "수정할 운영 기간", example = "11", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         Integer period,
 
-        @NotBlank(message = "활동 요일을 선택해주세요.")
+        @NotNull(message = "활동 요일을 선택해주세요.")
         @Schema(description = "수정할 활동 요일", example = "화,목", requiredMode = Schema.RequiredMode.REQUIRED)
         List<String> day,
 
-        @NotBlank(message = "활동 시작 시간을 입력해주세요.")
+        @NotNull(message = "활동 시작 시간을 입력해주세요.")
         @Schema(description = "수정할 활동 시작 시간", example = "20:00", requiredMode = Schema.RequiredMode.REQUIRED)
         LocalTime startTime,
 
-        @NotBlank(message = "활동 종료 시간을 입력해주세요.")
+        @NotNull(message = "활동 종료 시간을 입력해주세요.")
         @Schema(description = "수정할 활동 종료 시간", example = "22:00", requiredMode = Schema.RequiredMode.REQUIRED)
         LocalTime endTime,
 
