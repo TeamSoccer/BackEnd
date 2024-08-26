@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -87,4 +88,12 @@ public class FileUtils {
         return fileInfoList;
     }
 
+	public void deleteFiles(List<String> fileNames) {
+		for (String fileName : fileNames) {
+			File file = new File(fileName);
+			if (file.exists()) {
+				file.delete();
+			}
+		}
+	}
 }

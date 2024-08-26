@@ -95,8 +95,12 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
     }
 
     @Override
+    @Transactional
     public void deleteSoccerTeam(Long teamIdx) {
         soccerTeamRepository.deleteById(teamIdx);
+        List<SoccerTeamFileEntity> files = soccerTeamFileRepository.findByTeamId(teamIdx);
+        fileUtils.deleteFiles(files.stream().map(SoccerTeamFileEntity::getImageUrl).toList());
+        soccerTeamFileRepository.deleteByTeamId(teamIdx);
     }
 
     @Override
