@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -53,23 +52,16 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
         SoccerTeamEntity soccerTeamEntity = soccerTeamRepository
                 .save(SoccerTeamEntity.from(soccerTeamInsertRequest, player));
 
-        // 첨부 파일을 저장하고 첨부 파일 정보를 반환
-        List<SoccerTeamFileDto> fileInfoList = fileUtils.parseFileInfo(soccerTeamEntity.getId(), files);
-
-        // 첨부 파일 정보를 저장
-        if (CollectionUtils.isEmpty(fileInfoList)) {
-            return;
-        }
-        List<SoccerTeamFileEntity> fileList = fileInfoList
-                .stream()
-                .map(file -> SoccerTeamFileEntity.from(file, soccerTeamEntity))
-                .toList();
-        soccerTeamFileRepository.saveAll(fileList);
+        saveFiles(files, soccerTeamEntity);
     }
 
     @Override
     @Transactional
-    public void updateSoccerTeam(String username, SoccerTeamUpdateRequest updateRequest) {
+    public void updateSoccerTeam(String username, SoccerTeamUpdateRequest updateRequest, MultipartFile[] files) {
+        SoccerTeamEntity team = soccerTeamRepository.findById(updateRequest.id())
+                .orElseThrow(() -> new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND));
+        deleteFilesByTeamId(updateRequest.id());
+        saveFiles(files, team);
         soccerTeamRepository.update(username, SoccerTeamUpdateDto.from(updateRequest))
                 .orElseThrow(() -> new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND));
     }
@@ -99,9 +91,28 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
     @Transactional
     public void deleteSoccerTeam(Long teamIdx) {
         soccerTeamRepository.deleteById(teamIdx);
+        deleteFilesByTeamId(teamIdx);
+    }
+
+    private void deleteFilesByTeamId(Long teamIdx) {
         List<SoccerTeamFileEntity> files = soccerTeamFileRepository.findByTeamId(teamIdx);
         fileUtils.deleteFiles(files.stream().map(SoccerTeamFileEntity::getImageUrl).toList());
         soccerTeamFileRepository.deleteByTeamId(teamIdx);
+    }
+
+    private void saveFiles(MultipartFile[] files, SoccerTeamEntity soccerTeamEntity) {
+        // 첨부 파일을 저장하고 첨부 파일 정보를 반환
+        List<SoccerTeamFileDto> fileInfoList = fileUtils.parseFileInfo(soccerTeamEntity.getId(), files);
+
+        // 첨부 파일 정보를 저장
+        if (CollectionUtils.isEmpty(fileInfoList)) {
+            return;
+        }
+        List<SoccerTeamFileEntity> fileList = fileInfoList
+                .stream()
+                .map(file -> SoccerTeamFileEntity.from(file, soccerTeamEntity))
+                .toList();
+        soccerTeamFileRepository.saveAll(fileList);
     }
 
     @Override

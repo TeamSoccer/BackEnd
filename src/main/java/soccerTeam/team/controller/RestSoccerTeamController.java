@@ -71,8 +71,9 @@ public class RestSoccerTeamController {
     @PutMapping
     public ApiResponse<?> updateSoccerTeam(
             @LoginMember String username,
-            @Valid @RequestBody SoccerTeamUpdateRequest updateRequest) {
-        soccerTeamService.updateSoccerTeam(username, updateRequest);
+            @Valid @RequestPart(value = "data") SoccerTeamUpdateRequest updateRequest,
+            @RequestPart(value = "files", required = false) MultipartFile[] files) {
+        soccerTeamService.updateSoccerTeam(username, updateRequest, files);
         return ApiResponse.success(SoccerTeamSuccessType.UPDATE_SOCCER_TEAM_SUCCESS);
     }
 
