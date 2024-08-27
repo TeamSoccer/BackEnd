@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import soccerTeam.dto.ApiResponse;
 import soccerTeam.enroll.dto.EnrollCreateRequest;
 import soccerTeam.enroll.dto.EnrollCreateResponse;
+import soccerTeam.enroll.dto.EnrollDto;
 import soccerTeam.enroll.dto.EnrollListResponse;
 import soccerTeam.enroll.service.EnrollService;
 import soccerTeam.security.LoginMember;
@@ -32,5 +33,11 @@ public class EnrollController {
     public ApiResponse<List<EnrollListResponse>> getEnrollListByTeam(@PathVariable("teamIdx") Long teamIdx) {
         List<EnrollListResponse> response = enrollService.getEnrollListByTeam(teamIdx);
         return ApiResponse.success(EnrollSuccessType.LIST_SUCCESS, response);
+    }
+
+    @GetMapping("/{enrollId}")
+    public ApiResponse<EnrollDto> getEnrollDetail(@PathVariable("enrollId") Long enrollId) {
+        EnrollDto enrollDto = enrollService.selectEnrollDetail(enrollId);
+        return ApiResponse.success(EnrollSuccessType.ENROLL_SUCCESS, enrollDto);
     }
 }

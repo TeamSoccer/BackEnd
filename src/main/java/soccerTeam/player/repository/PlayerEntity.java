@@ -37,6 +37,9 @@ public class PlayerEntity {
     private String role;
 
     @Column(nullable = false)
+    private String region;
+
+    @Column(nullable = false)
     private String phoneNumber;
 
     @Column
@@ -56,6 +59,7 @@ public class PlayerEntity {
             String username,
             String password,
             String role,
+            String region,
             String phoneNumber,
             Integer period,
             Integer age,
@@ -66,6 +70,7 @@ public class PlayerEntity {
         this.username = username;
         this.password = password;
         this.role = role;
+        this.region = region;
         this.phoneNumber = phoneNumber;
         this.period = period;
         this.age = age;
