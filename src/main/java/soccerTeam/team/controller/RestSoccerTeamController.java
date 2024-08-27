@@ -61,9 +61,12 @@ public class RestSoccerTeamController {
     }
 
     @GetMapping("/{teamIdx}")
-    public ApiResponse<SoccerTeamDto> getSoccerTeamDetail(@PathVariable("teamIdx") Long teamIdx) {
+    public ApiResponse<SoccerTeamDto> getSoccerTeamDetail(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable("teamIdx") Long teamIdx) {
+        String isOwner = soccerTeamService.checkMethod(teamIdx, authorizationHeader);
         SoccerTeamDto soccerTeamDtoResult = soccerTeamService.selectSoccerTeamDetail(teamIdx);
-        return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_SUCCESS, soccerTeamDtoResult);
+        return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_SUCCESS,soccerTeamDtoResult, String.valueOf(isOwner));
     }
 
     @PutMapping

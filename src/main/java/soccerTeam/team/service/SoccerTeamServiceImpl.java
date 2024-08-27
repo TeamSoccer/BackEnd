@@ -1,6 +1,7 @@
 package soccerTeam.team.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
 import soccerTeam.common.FileUtils;
+import soccerTeam.common.JwtUtils;
 import soccerTeam.team.dto.response.SoccerTeamListResponseDto;
 import soccerTeam.team.SoccerTeamUpdateDto;
 import soccerTeam.team.dto.SoccerTeamDto;
@@ -36,6 +38,7 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
     private final SoccerTeamFileRepository soccerTeamFileRepository;
     private final PlayerRepository playerRepository;
     private final FileUtils fileUtils;
+    private final JwtUtils jwtUtils;
 
     @Override
     public List<SoccerTeamListResponseDto> selectSoccerTeamList() {
@@ -85,6 +88,24 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
                         .build()
         ).toList();
         return soccerTeam.toModel(files);
+    }
+    @Override
+    public String checkMethod(Long teamIdx, String token) {
+        Optional<SoccerTeamEntity> soccerTeam = soccerTeamRepository.findById(teamIdx);
+        String username = jwtUtils.getUsername(extractTokenFromAuthorizationHeader(token));
+        if (soccerTeam.isEmpty()) {
+            throw new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND);
+        }
+        if (soccerTeam.get().getPlayer().getUsername().equals(username)) {
+            return "YES";
+        }
+        return "NO";
+    }
+    private String extractTokenFromAuthorizationHeader(String authorizationHeader) {
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.substring(7);
+        }
+        return null;
     }
 
     @Override
