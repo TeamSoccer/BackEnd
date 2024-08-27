@@ -10,10 +10,7 @@ import java.util.List;
 public interface EnrollService {
     EnrollCreateResponse create(String username, EnrollCreateRequest enrollCreateRequest);
 
-    // enroll-post
     List<EnrollListResponse> getEnrollListByTeam(Long teamId);
 
-    EnrollDto selectEnrollDetail(Long enrollId);
-
-
+    EnrollDto findByIdAndUpdateHitCnt(Long id);
 }

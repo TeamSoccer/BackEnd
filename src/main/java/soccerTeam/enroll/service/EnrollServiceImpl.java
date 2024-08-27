@@ -17,8 +17,6 @@ import soccerTeam.type.player.PlayerErrorType;
 import soccerTeam.type.soccerTeam.SoccerTeamErrorType;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import soccerTeam.enroll.dto.EnrollDto;
 
 @Service
 @RequiredArgsConstructor
@@ -50,8 +48,8 @@ public class EnrollServiceImpl implements EnrollService {
     }
 
     @Override
-    public EnrollDto selectEnrollDetail(Long enrollId) {
-        EnrollEntity enrollEntity = enrollRepository.updateHitCount(enrollId)
+    public EnrollDto findByIdAndUpdateHitCnt(Long id) {
+        EnrollEntity enrollEntity = enrollRepository.findByIdAndUpdateHitCnt(id)
                 .orElseThrow(() -> new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND));
 
         return EnrollDto.of(enrollEntity);
