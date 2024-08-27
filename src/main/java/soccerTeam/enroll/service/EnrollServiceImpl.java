@@ -2,8 +2,10 @@ package soccerTeam.enroll.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import soccerTeam.enroll.dto.EnrollCreateRequest;
 import soccerTeam.enroll.dto.EnrollCreateResponse;
+import soccerTeam.enroll.dto.EnrollDto;
 import soccerTeam.enroll.dto.EnrollListResponse;
 import soccerTeam.enroll.repository.EnrollEntity;
 import soccerTeam.enroll.repository.EnrollRepository;
@@ -16,7 +18,6 @@ import soccerTeam.type.player.PlayerErrorType;
 import soccerTeam.type.soccerTeam.SoccerTeamErrorType;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,5 +46,19 @@ public class EnrollServiceImpl implements EnrollService {
         return enrolls.stream()
                 .map(EnrollListResponse::from)
                 .toList();
+    }
+
+    @Override
+    public EnrollDto findByIdAndUpdateHitCnt(Long id) {
+        EnrollEntity enrollEntity = enrollRepository.findByIdAndUpdateHitCnt(id)
+                .orElseThrow(() -> new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND));
+
+        return EnrollDto.of(enrollEntity);
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(Long id) {
+        enrollRepository.deleteById(id);
     }
 }

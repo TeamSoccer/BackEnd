@@ -10,6 +10,7 @@ public record EnrollListResponse(
         String title,
         String playerName,
         String phoneNumber,
+        String position,
         Boolean athlete,
         LocalDateTime createdAt,
         LocalDateTime updatedAt) {
@@ -21,6 +22,7 @@ public record EnrollListResponse(
                 enroll.getTitle(),
                 player.getName(),
                 player.getPhoneNumber(),
+                enroll.getPosition(),
                 player.getAthlete(),
                 enroll.getCreatedAt(),
                 enroll.getUpdatedAt()

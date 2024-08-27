@@ -8,6 +8,7 @@ public record PlayerProfileResponse(
         String email,
         String username,
         String phoneNumber,
+        String region,
         Integer period,
         Integer age,
         Boolean athlete) {
@@ -18,6 +19,7 @@ public record PlayerProfileResponse(
                 player.getEmail(),
                 player.getUsername(),
                 player.getPhoneNumber(),
+                player.getRegion(),
                 player.getPeriod(),
                 player.getAge(),
                 player.getAthlete());

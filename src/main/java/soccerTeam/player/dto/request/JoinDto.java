@@ -1,11 +1,7 @@
 package soccerTeam.player.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,12 +39,19 @@ public class JoinDto {
     private String phoneNumber;
 
     @NotNull(message = "나이를 입력해주세요.")
-    @Size(min = 10, max = 100, message = "올바른 나이를 입력해주세요.")
+    @Min(value = 10, message = "나이는 최소 10살 이상이어야 합니다.")
+    @Max(value = 100, message = "나이는 최대 100살 이하이어야 합니다.")
     @Schema(description = "사용자의 나이", example = "29", requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer age;
 
     @Schema(description = "사용자의 구력", example = "5", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer period;
+
+    @Schema(description = "사용자의 지역", example = "서울", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private String region;
+
+    @Schema(description = "사용자의 역할", example = "ROLE_USER", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private String role;
 
     @Schema(description = "선출 여부", example = "true", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Boolean athlete;
@@ -61,6 +64,8 @@ public class JoinDto {
             String password,
             String passwordConfirm,
             String phoneNumber,
+            String region,
+            String role,
             Integer period,
             Integer age,
             Boolean athlete) {
@@ -70,6 +75,8 @@ public class JoinDto {
         this.password = password;
         this.passwordConfirm = passwordConfirm;
         this.phoneNumber = phoneNumber;
+        this.region = region;
+        this.role = role;
         this.period = period;
         this.age = age;
         this.athlete = athlete;
