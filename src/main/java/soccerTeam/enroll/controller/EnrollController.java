@@ -7,6 +7,7 @@ import soccerTeam.dto.ApiResponse;
 import soccerTeam.enroll.dto.EnrollCreateRequest;
 import soccerTeam.enroll.dto.EnrollCreateResponse;
 import soccerTeam.enroll.dto.EnrollListResponse;
+import soccerTeam.enroll.dto.EnrollUpdateRequest;
 import soccerTeam.enroll.service.EnrollService;
 import soccerTeam.security.LoginMember;
 import soccerTeam.type.enroll.EnrollSuccessType;
@@ -33,4 +34,14 @@ public class EnrollController {
         List<EnrollListResponse> response = enrollService.getEnrollListByTeam(teamIdx);
         return ApiResponse.success(EnrollSuccessType.LIST_SUCCESS, response);
     }
+
+    // update-enroll
+    @PutMapping
+    public ApiResponse<?> updateEnroll(
+            @LoginMember String username,
+            @Valid @RequestBody EnrollUpdateRequest updateRequest) {
+        enrollService.updateEnroll(username, updateRequest);
+        return ApiResponse.success(EnrollSuccessType.UPDATE_SUCCESS);
+    }
+
 }

@@ -2,16 +2,16 @@ package soccerTeam.enroll.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import soccerTeam.enroll.dto.EnrollCreateRequest;
-import soccerTeam.enroll.dto.EnrollCreateResponse;
-import soccerTeam.enroll.dto.EnrollListResponse;
+import soccerTeam.enroll.dto.*;
 import soccerTeam.enroll.repository.EnrollEntity;
 import soccerTeam.enroll.repository.EnrollRepository;
 import soccerTeam.exception.NotFoundException;
 import soccerTeam.player.repository.PlayerEntity;
 import soccerTeam.player.repository.PlayerRepository;
+import soccerTeam.team.SoccerTeamUpdateDto;
 import soccerTeam.team.repository.SoccerTeamEntity;
 import soccerTeam.team.repository.SoccerTeamRepository;
+import soccerTeam.type.enroll.EnrollErrorType;
 import soccerTeam.type.player.PlayerErrorType;
 import soccerTeam.type.soccerTeam.SoccerTeamErrorType;
 
@@ -45,5 +45,13 @@ public class EnrollServiceImpl implements EnrollService {
         return enrolls.stream()
                 .map(EnrollListResponse::from)
                 .toList();
+    }
+
+    @Override
+    public void updateEnroll(String username, EnrollUpdateRequest updateRequest) {
+        EnrollEntity enroll = enrollRepository.findById(updateRequest.id())
+                .orElseThrow(() -> new NotFoundException(EnrollErrorType.ENROLL_NOT_FOUND));
+
+        enrollRepository.update(username, EnrollUpdateDto.from(updateRequest));
     }
 }
