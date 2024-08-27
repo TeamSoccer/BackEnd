@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface JpaEnrollRepository extends JpaRepository<EnrollEntity, Long> {
     List<EnrollEntity> findByTeam(SoccerTeamEntity team);
+
 }

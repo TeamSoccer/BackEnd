@@ -40,6 +40,7 @@ public class JoinDto {
 
     @NotNull(message = "나이를 입력해주세요.")
     @Min(value = 10, message = "나이는 최소 10살 이상이어야 합니다.")
+    @Max(value = 100, message = "나이는 최대 100살 이하이어야 합니다.")
     @Schema(description = "사용자의 나이", example = "29", requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer age;
 
@@ -49,7 +50,7 @@ public class JoinDto {
     @Schema(description = "사용자의 지역", example = "서울", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String region;
 
-    @Schema(description = "사용자의 선호 포지션", example = "공격수", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "사용자의 역할", example = "ROLE_USER", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String role;
 
     @Schema(description = "선출 여부", example = "true", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
@@ -64,6 +65,7 @@ public class JoinDto {
             String passwordConfirm,
             String phoneNumber,
             String region,
+            String role,
             Integer period,
             Integer age,
             Boolean athlete) {
@@ -74,6 +76,7 @@ public class JoinDto {
         this.passwordConfirm = passwordConfirm;
         this.phoneNumber = phoneNumber;
         this.region = region;
+        this.role = role;
         this.period = period;
         this.age = age;
         this.athlete = athlete;

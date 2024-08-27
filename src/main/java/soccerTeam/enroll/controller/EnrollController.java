@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soccerTeam.dto.ApiResponse;
 import soccerTeam.enroll.dto.EnrollCreateRequest;
@@ -14,41 +16,57 @@ import soccerTeam.enroll.dto.EnrollListResponse;
 import soccerTeam.enroll.service.EnrollService;
 import soccerTeam.security.LoginMember;
 import soccerTeam.type.enroll.EnrollSuccessType;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/enroll")
 @RequiredArgsConstructor
-@Tag(name = "Enroll API", description = "Enroll API 관련 작업")
+@Tag(name = "입단 신청서 API", description = "입단 신청서 API 관련 작업")
 public class EnrollController {
 
     private final EnrollService enrollService;
 
-    @Operation(summary = "Enroll 생성", description = "새로운 Enroll을 생성합니다.")
+    @Operation(summary = "입단 신청서 생성", description = "새로운 신청서를 생성합니다.")
     @PostMapping
     public ApiResponse<EnrollCreateResponse> create(
             @LoginMember
-            @Parameter(description = "로그인한 사용자명", required = true) String username,
+            String username,
             @Valid @RequestBody
-            @Parameter(description = "Enroll 생성 요청 객체", required = true) EnrollCreateRequest enrollCreateRequest) {
+            EnrollCreateRequest enrollCreateRequest) {
         EnrollCreateResponse response = enrollService.create(username, enrollCreateRequest);
         return ApiResponse.success(EnrollSuccessType.CREATE_SUCCESS, response);
     }
 
-    @Operation(summary = "입단 신청자 목록 조회", description = "입단 신청자 목록을 조회합니다.")
-    @GetMapping("/team/{teamIdx}")
+    @Operation(summary = "입단 신청서 목록 조회", description = "입단 신청서 목록을 조회합니다.")
+    @GetMapping("/team/{teamId}")
     public ApiResponse<List<EnrollListResponse>> getEnrollListByTeam(
-            @Parameter(description = "팀 인덱스", required = true) @PathVariable("teamIdx") Long teamIdx) {
-        List<EnrollListResponse> response = enrollService.getEnrollListByTeam(teamIdx);
+            @Parameter(description = "팀 인덱스", required = true) @PathVariable("teamId") Long teamId) {
+        List<EnrollListResponse> response = enrollService.getEnrollListByTeam(teamId);
         return ApiResponse.success(EnrollSuccessType.LIST_SUCCESS, response);
     }
 
-    @Operation(summary = "입단 신청자 상세 조회", description = "입단 신청자의 상세 정보를 조회합니다.")
+    @Operation(summary = "입단 신청서 상세 조회", description = "입단 신청서를 상세 조회합니다.")
     @GetMapping("/{enrollId}")
     public ApiResponse<EnrollDto> getEnrollDetail(
-            @Parameter(description = "Enroll ID", required = true) @PathVariable("enrollId") Long enrollId) {
+            @Parameter(description = "Enroll id", required = true) @PathVariable("enrollId") Long enrollId) {
         EnrollDto enrollDto = enrollService.findByIdAndUpdateHitCnt(enrollId);
         return ApiResponse.success(EnrollSuccessType.ENROLL_SUCCESS, enrollDto);
+    }
+
+    @Operation(summary = "입단 신청서 삭제", description = "입단 신청서를 삭제합니다.")
+    @DeleteMapping("/{enrollId}")
+    public ResponseEntity<Void> deleteEnroll(@PathVariable("enrollId") Long enrollId) {
+        log.info("Delete request received for enrollId: {}", enrollId);
+        try {
+            enrollService.deleteById(enrollId);
+            log.info("Successfully deleted enrollId: {}", enrollId);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (Exception e) {
+            log.error("Error occurred while deleting enrollId: {}", enrollId, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

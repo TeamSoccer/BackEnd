@@ -3,6 +3,7 @@ package soccerTeam.enroll.repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import soccerTeam.team.repository.SoccerTeamEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,11 +24,17 @@ public class EnrollRepositoryImpl implements EnrollRepository {
     }
 
     @Override
-    public Optional<EnrollEntity> findByIdAndUpdateHitCnt(Long enrollId) {
-        return jpaEnrollRepository.findById(enrollId)
+    @Transactional
+    public Optional<EnrollEntity> findByIdAndUpdateHitCnt(Long id) {
+        return jpaEnrollRepository.findById(id)
                 .map(enroll -> {
                     enroll.setHitCnt(enroll.getHitCnt() + 1);
-                    return jpaEnrollRepository.save(enroll);
+                    return enroll;
                 });
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        jpaEnrollRepository.deleteById(id);
     }
 }

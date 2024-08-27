@@ -13,25 +13,25 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @AllArgsConstructor
-@Schema(description = "입단 신청 요청 객체")
+@Schema(description = " 신청서 상세 내역 응답 객체")
 public class EnrollDto {
 
-    @Schema(description = "Enroll ID", example = "1")
+    @Schema(description = "신청서 ID", example = "1")
     private Long id;
 
     @Schema(description = "사용자의 정보")
     private PlayerProfileResponse player;
 
     @NotBlank(message = "제목을 입력해주세요.")
-    @Schema(description = "Title of the enrollment", example = "Join the team")
+    @Schema(description = "신청서 제목", example = "입단 신청합니다.")
     private String title;
 
     @NotBlank(message = "내용을 입력해주세요.")
-    @Schema(description = "Content of the enrollment", example = "I would like to join the soccer team.")
+    @Schema(description = "신청서 내용", example = "이 팀에 합류하고 싶습니다.")
     private String content;
 
     @NotBlank(message = "선호 포지션을 입력해주세요.")
-    @Schema(description = "Position of the player", example = "Forward")
+    @Schema(description = "선호하는 포지션", example = "공격수")
     private String position;
 
     @Schema(description = "조회수", example = "10")
@@ -40,11 +40,8 @@ public class EnrollDto {
     @Schema(description = "사용자의 권한", example = "ROLE_USER")
     private String role;
 
-    @Schema(description = "사용자의 지역", example = "Seoul")
+    @Schema(description = "사용자의 지역", example = "서울")
     private String region;
-
-    @Schema(description = "신청 팀의 ID", example = "2")
-    private Long teamId;
 
     @Schema(description = "생성된 시간", example = "2024-08-27T10:15:30")
     private LocalDateTime createdAt;
@@ -62,7 +59,6 @@ public class EnrollDto {
                 .hitCnt(enroll.getHitCnt())
                 .role(enroll.getPlayer().getRole())
                 .region(enroll.getPlayer().getRegion())
-                .teamId(enroll.getTeam().getId())
                 .createdAt(enroll.getCreatedAt())
                 .updatedAt(enroll.getUpdatedAt())
                 .build();

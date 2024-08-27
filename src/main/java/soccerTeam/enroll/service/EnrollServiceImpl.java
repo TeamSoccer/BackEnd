@@ -2,6 +2,7 @@ package soccerTeam.enroll.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import soccerTeam.enroll.dto.EnrollCreateRequest;
 import soccerTeam.enroll.dto.EnrollCreateResponse;
 import soccerTeam.enroll.dto.EnrollDto;
@@ -53,5 +54,11 @@ public class EnrollServiceImpl implements EnrollService {
                 .orElseThrow(() -> new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND));
 
         return EnrollDto.of(enrollEntity);
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(Long id) {
+        enrollRepository.deleteById(id);
     }
 }

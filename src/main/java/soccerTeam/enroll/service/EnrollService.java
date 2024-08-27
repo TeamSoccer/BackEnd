@@ -13,4 +13,7 @@ public interface EnrollService {
     List<EnrollListResponse> getEnrollListByTeam(Long teamId);
 
     EnrollDto findByIdAndUpdateHitCnt(Long id);
+
+    void deleteById(Long id);
+
 }
