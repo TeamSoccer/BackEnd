@@ -15,4 +15,8 @@ public interface EnrollRepository {
     Optional<EnrollEntity> findById(Long id);
 
     Optional<EnrollEntity> update(String username, EnrollUpdateDto enrollUpdateDto);
+
+    Optional<EnrollEntity> findByIdAndUpdateHitCnt(Long id);
+
+    void deleteById(Long id);
 }

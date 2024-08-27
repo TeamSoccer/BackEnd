@@ -37,7 +37,9 @@ public class JoinServiceImpl implements JoinService {
                 .username(joinDto.getUsername())
                 .password(joinDto.getPassword())
                 .phoneNumber(joinDto.getPhoneNumber())
+                .region(joinDto.getRegion())
                 .period(joinDto.getPeriod())
+                .role(joinDto.getRole())
                 .age(joinDto.getAge())
                 .athlete(joinDto.getAthlete())
                 .build();

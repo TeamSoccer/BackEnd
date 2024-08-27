@@ -8,6 +8,7 @@ public record EnrollCreateResponse(
         Long id,
         String title,
         String content,
+        String position,
         Integer hitCnt,
         LocalDateTime createdAt,
         LocalDateTime updatedAt) {
@@ -16,6 +17,7 @@ public record EnrollCreateResponse(
                 enroll.getId(),
                 enroll.getTitle(),
                 enroll.getContent(),
+                enroll.getPosition(),
                 enroll.getHitCnt(),
                 enroll.getCreatedAt(),
                 enroll.getUpdatedAt());

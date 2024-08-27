@@ -15,5 +15,9 @@ public record EnrollCreateRequest(
 
         @NotBlank(message = "내용을 입력해주세요.")
         @Schema(description = "등록할 선수 입단신청의 내용", example = "선수A 잘 부탁드립니다.", requiredMode = Schema.RequiredMode.REQUIRED)
-        String content) {
+        String content,
+
+        @NotBlank(message = "포지션을 입력해주세요.")
+        @Schema(description = "선수가 선호하는 포지션의 내용", example = "공격수.", requiredMode = Schema.RequiredMode.REQUIRED)
+        String position) {
 }

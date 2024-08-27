@@ -14,6 +14,7 @@ public class PlayerDto {
     private String password;
     private String role;
     private String phoneNumber;
+    private String region;
     private Integer period;
     private Integer age;
     private Boolean athlete;

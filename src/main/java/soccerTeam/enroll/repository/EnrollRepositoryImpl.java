@@ -7,6 +7,7 @@ import soccerTeam.enroll.dto.EnrollUpdateDto;
 import soccerTeam.player.repository.PlayerEntity;
 import soccerTeam.team.repository.SoccerTeamEntity;
 import soccerTeam.type.enroll.EnrollErrorType;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -49,5 +50,19 @@ public class EnrollRepositoryImpl implements EnrollRepository {
             return Optional.of(jpaEnrollRepository.save(enrollEntity));
         }
         return enroll;
+    }
+
+    @Transactional
+    public Optional<EnrollEntity> findByIdAndUpdateHitCnt(Long id) {
+        return jpaEnrollRepository.findById(id)
+                .map(enroll -> {
+                    enroll.setHitCnt(enroll.getHitCnt() + 1);
+                    return enroll;
+                });
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        jpaEnrollRepository.deleteById(id);
     }
 }
