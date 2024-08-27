@@ -36,7 +36,6 @@ import soccerTeam.type.soccerTeam.SoccerTeamSuccessType;
 public class RestSoccerTeamController {
 
     private final SoccerTeamService soccerTeamService;
-
     @Operation(summary = "게시판 목록 조회", description = "등록된 게시물 목록을 조회해서 반환합니다.")
     @GetMapping
     public ApiResponse<List<SoccerTeamListResponseDto>> getAllSoccerTeams() {
@@ -59,8 +58,6 @@ public class RestSoccerTeamController {
         soccerTeamService.insertSoccerTeam(username, soccerTeamInsertRequest, files);
         return ApiResponse.success(SoccerTeamSuccessType.CREATE_SOCCER_TEAM_SUCCESS);
     }
-
-
 
     @GetMapping("/{teamIdx}")
     public ApiResponse<SoccerTeamDto> getSoccerTeamDetail(@PathVariable("teamIdx") Long teamIdx) {

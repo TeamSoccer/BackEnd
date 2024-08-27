@@ -9,7 +9,7 @@ public record EnrollListResponse(
         Long id,
         String title,
         String playerName,
-        String region,
+        String phoneNumber,
         Boolean athlete,
         LocalDateTime createdAt,
         LocalDateTime updatedAt) {
