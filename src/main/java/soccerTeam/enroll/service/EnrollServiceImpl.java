@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import soccerTeam.enroll.dto.EnrollCreateRequest;
 import soccerTeam.enroll.dto.EnrollCreateResponse;
+import soccerTeam.enroll.dto.EnrollListResponse;
 import soccerTeam.enroll.repository.EnrollEntity;
 import soccerTeam.enroll.repository.EnrollRepository;
 import soccerTeam.exception.NotFoundException;
@@ -13,6 +14,9 @@ import soccerTeam.team.repository.SoccerTeamEntity;
 import soccerTeam.team.repository.SoccerTeamRepository;
 import soccerTeam.type.player.PlayerErrorType;
 import soccerTeam.type.soccerTeam.SoccerTeamErrorType;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,5 +34,16 @@ public class EnrollServiceImpl implements EnrollService {
         EnrollEntity enroll = EnrollEntity.from(player, soccerTeam, enrollCreateRequest);
         enroll = enrollRepository.save(enroll);
         return EnrollCreateResponse.of(enroll);
+    }
+
+    // enroll-post
+    @Override
+    public List<EnrollListResponse> getEnrollListByTeam(Long teamIdx) {
+        SoccerTeamEntity soccerTeam = soccerTeamRepository.findById(teamIdx)
+                .orElseThrow(() -> new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND));
+        List<EnrollEntity> enrolls = enrollRepository.findByTeam(soccerTeam);
+        return enrolls.stream()
+                .map(EnrollListResponse::from)
+                .toList();
     }
 }

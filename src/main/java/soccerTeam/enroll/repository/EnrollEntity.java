@@ -3,6 +3,7 @@ package soccerTeam.enroll.repository;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import soccerTeam.enroll.dto.EnrollCreateRequest;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
+@NoArgsConstructor // JPA가 엔티티를 인스턴스화할 때 사용하기 위해 기본 생성자 생성
 public class EnrollEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

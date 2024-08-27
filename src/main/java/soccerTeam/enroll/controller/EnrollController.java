@@ -2,16 +2,16 @@ package soccerTeam.enroll.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import soccerTeam.dto.ApiResponse;
 import soccerTeam.enroll.dto.EnrollCreateRequest;
 import soccerTeam.enroll.dto.EnrollCreateResponse;
+import soccerTeam.enroll.dto.EnrollListResponse;
 import soccerTeam.enroll.service.EnrollService;
 import soccerTeam.security.LoginMember;
 import soccerTeam.type.enroll.EnrollSuccessType;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/enroll")
@@ -25,5 +25,12 @@ public class EnrollController {
             @Valid @RequestBody EnrollCreateRequest enrollCreateRequest) {
         EnrollCreateResponse response = enrollService.create(username, enrollCreateRequest);
         return ApiResponse.success(EnrollSuccessType.CREATE_SUCCESS, response);
+    }
+
+    // enroll-post
+    @GetMapping("/team/{teamIdx}")
+    public ApiResponse<List<EnrollListResponse>> getEnrollListByTeam(@PathVariable("teamIdx") Long teamIdx) {
+        List<EnrollListResponse> response = enrollService.getEnrollListByTeam(teamIdx);
+        return ApiResponse.success(EnrollSuccessType.LIST_SUCCESS, response);
     }
 }
