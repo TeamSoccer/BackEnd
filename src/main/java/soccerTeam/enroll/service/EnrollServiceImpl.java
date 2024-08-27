@@ -44,6 +44,6 @@ public class EnrollServiceImpl implements EnrollService {
         List<EnrollEntity> enrolls = enrollRepository.findByTeam(soccerTeam);
         return enrolls.stream()
                 .map(EnrollListResponse::from)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
