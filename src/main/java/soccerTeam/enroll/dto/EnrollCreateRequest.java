@@ -2,12 +2,10 @@ package soccerTeam.enroll.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 @Schema(description = "선수 입단신청 등록 요청 객체")
 public record EnrollCreateRequest(
 
-        @NotNull
         @Schema(description = "팀 ID", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
         Long teamId,
 

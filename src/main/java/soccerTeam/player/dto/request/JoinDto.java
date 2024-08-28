@@ -39,7 +39,8 @@ public class JoinDto {
     private String phoneNumber;
 
     @NotNull(message = "나이를 입력해주세요.")
-    @Min(value = 5, message = "올바른 나이를 입력해주세요.") @Max(value = 100, message = "올바른 나이를 입력해주세요.")
+    @Min(value = 10, message = "나이는 최소 10살 이상이어야 합니다.")
+    @Max(value = 100, message = "나이는 최대 100살 이하이어야 합니다.")
     @Schema(description = "사용자의 나이", example = "29", requiredMode = Schema.RequiredMode.REQUIRED)
     private Integer age;
 

@@ -2,7 +2,6 @@ package soccerTeam.enroll.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import soccerTeam.enroll.dto.*;
 import org.springframework.transaction.annotation.Transactional;
 import soccerTeam.enroll.dto.EnrollCreateRequest;
 import soccerTeam.enroll.dto.EnrollCreateResponse;
@@ -10,7 +9,6 @@ import soccerTeam.enroll.dto.EnrollDto;
 import soccerTeam.enroll.dto.EnrollListResponse;
 import soccerTeam.enroll.repository.EnrollEntity;
 import soccerTeam.enroll.repository.EnrollRepository;
-import soccerTeam.exception.BadRequestException;
 import soccerTeam.enroll.repository.JpaEnrollRepository;
 import soccerTeam.exception.NotFoundException;
 import soccerTeam.exception.UnauthorizedException;
@@ -23,7 +21,6 @@ import soccerTeam.type.enroll.EnrollSuccessType;
 import soccerTeam.type.player.PlayerErrorType;
 import soccerTeam.type.soccerTeam.SoccerTeamErrorType;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -56,23 +53,7 @@ public class EnrollServiceImpl implements EnrollService {
                 .toList();
     }
 
-    // update-enroll
     @Override
-    @Transactional
-    public EnrollUpdateDto updateEnroll(String username, EnrollUpdateRequest updateRequest) {
-        EnrollEntity enroll = enrollRepository.findById(updateRequest.id())
-                .orElseThrow(() -> new NotFoundException(EnrollErrorType.ENROLL_NOT_FOUND));
-
-        PlayerEntity player = enroll.getPlayer();
-        if (!player.getUsername().equals(username)) {
-            throw new BadRequestException(EnrollErrorType.ONLY_OWNER_CAN_MODIFY);
-        }
-
-        updateRequest.updateTo(enroll);
-
-        return EnrollUpdateDto.of(enroll);
-    }
-
     public EnrollDto findByIdAndUpdateHitCnt(Long id) {
         EnrollEntity enrollEntity = enrollRepository.findByIdAndUpdateHitCnt(id)
                 .orElseThrow(() -> new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND));
