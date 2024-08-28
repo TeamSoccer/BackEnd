@@ -36,14 +36,13 @@ import soccerTeam.type.soccerTeam.SoccerTeamSuccessType;
 public class RestSoccerTeamController {
 
     private final SoccerTeamService soccerTeamService;
-
     @Operation(summary = "게시판 목록 조회", description = "등록된 게시물 목록을 조회해서 반환합니다.")
     @GetMapping
     public ApiResponse<List<SoccerTeamListResponseDto>> getAllSoccerTeams() {
         List<SoccerTeamListResponseDto> response = soccerTeamService.selectSoccerTeamList();
         return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_LIST_SUCCESS, response);
     }
-    
+
     @Operation(summary = "게시판 등록", description = "게시물 제목과 내용을 저장합니다.")
     @Parameter(name = "soccerTeamDto", description = "게시물 정보를 담고 있는 객체", required = true)
     @PostMapping("/write")
