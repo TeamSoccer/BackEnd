@@ -4,7 +4,8 @@ import soccerTeam.type.ErrorType;
 
 public enum EnrollErrorType implements ErrorType {
     ENROLL_NOT_FOUND("ENROLL_1", "입단 신청서를 찾을 수 없습니다"),
-    ONLY_OWNER_CAN_MODIFY("ENROLL_2", "본인의 입단 신청서만 수정 가능합니다");
+    ONLY_OWNER_CAN_MODIFY("ENROLL_2", "본인의 입단 신청서만 수정 가능합니다"),
+    DELETE_FAILED("ENROLL_3", "사용자를 찾을 수 없습니다");
 
     private final String code;
     private final String message;

@@ -11,12 +11,15 @@ import soccerTeam.enroll.dto.EnrollListResponse;
 import soccerTeam.enroll.repository.EnrollEntity;
 import soccerTeam.enroll.repository.EnrollRepository;
 import soccerTeam.exception.BadRequestException;
+import soccerTeam.enroll.repository.JpaEnrollRepository;
 import soccerTeam.exception.NotFoundException;
+import soccerTeam.exception.UnauthorizedException;
 import soccerTeam.player.repository.PlayerEntity;
 import soccerTeam.player.repository.PlayerRepository;
 import soccerTeam.team.repository.SoccerTeamEntity;
 import soccerTeam.team.repository.SoccerTeamRepository;
 import soccerTeam.type.enroll.EnrollErrorType;
+import soccerTeam.type.enroll.EnrollSuccessType;
 import soccerTeam.type.player.PlayerErrorType;
 import soccerTeam.type.soccerTeam.SoccerTeamErrorType;
 
@@ -29,6 +32,7 @@ public class EnrollServiceImpl implements EnrollService {
     private final EnrollRepository enrollRepository;
     private final PlayerRepository playerRepository;
     private final SoccerTeamRepository soccerTeamRepository;
+    private final JpaEnrollRepository jpaEnrollRepository;
 
     @Override
     public EnrollCreateResponse create(String username, EnrollCreateRequest enrollCreateRequest) {
@@ -72,13 +76,18 @@ public class EnrollServiceImpl implements EnrollService {
     public EnrollDto findByIdAndUpdateHitCnt(Long id) {
         EnrollEntity enrollEntity = enrollRepository.findByIdAndUpdateHitCnt(id)
                 .orElseThrow(() -> new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND));
-
         return EnrollDto.of(enrollEntity);
     }
 
     @Override
     @Transactional
-    public void deleteById(Long id) {
-        enrollRepository.deleteById(id);
+    public void deleteById(Long id, String username) {
+        EnrollEntity enroll = jpaEnrollRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(EnrollErrorType.NOT_FOUND));
+        if (!enroll.getPlayer().getUsername().equals(username)) {
+            throw new UnauthorizedException(EnrollErrorType.NOT_OWNED_BY_USER);
+        }
+        jpaEnrollRepository.deleteById(id);
     }
+
 }

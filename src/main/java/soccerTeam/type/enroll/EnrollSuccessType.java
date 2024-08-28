@@ -6,8 +6,9 @@ public enum EnrollSuccessType implements SuccessType {
     CREATE_SUCCESS("ENROLL_1", "팀 가입 신청에 성공하였습니다"),
     LIST_SUCCESS("ENROLL_2", "입단 신청서 목록 조회에 성공했습니다"),
     UPDATE_SUCCESS("ENROLL_3", "입단 신청 수정이 완료되었습니다."),
-    ENROLL_SUCCESS("ENROLL_4", "입단 신청서 조회에 성공했습니다");
-    
+    ENROLL_SUCCESS("ENROLL_4", "입단 신청서 조회에 성공했습니다"),
+    DELETE_SUCCESS("ENROLL_5", "입단 신청서 삭제에 성공했습니다");
+
     private final String code;
     private final String message;
 

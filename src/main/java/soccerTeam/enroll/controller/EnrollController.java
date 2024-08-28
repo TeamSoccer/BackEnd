@@ -29,10 +29,8 @@ public class EnrollController {
     @Operation(summary = "입단 신청서 생성", description = "새로운 신청서를 생성합니다.")
     @PostMapping
     public ApiResponse<EnrollCreateResponse> create(
-            @LoginMember
-            String username,
-            @Valid @RequestBody
-            EnrollCreateRequest enrollCreateRequest) {
+            @LoginMember String username,
+            @Valid @RequestBody EnrollCreateRequest enrollCreateRequest) {
         EnrollCreateResponse response = enrollService.create(username, enrollCreateRequest);
         return ApiResponse.success(EnrollSuccessType.CREATE_SUCCESS, response);
     }
@@ -57,22 +55,15 @@ public class EnrollController {
     @Operation(summary = "입단 신청서 상세 조회", description = "입단 신청서를 상세 조회합니다.")
     @GetMapping("/{enrollId}")
     public ApiResponse<EnrollDto> getEnrollDetail(
-            @Parameter(description = "Enroll id", required = true) @PathVariable("enrollId") Long enrollId) {
+            @Parameter(description = "입단 신청서 id", required = true) @PathVariable("enrollId") Long enrollId) {
         EnrollDto enrollDto = enrollService.findByIdAndUpdateHitCnt(enrollId);
         return ApiResponse.success(EnrollSuccessType.ENROLL_SUCCESS, enrollDto);
     }
 
     @Operation(summary = "입단 신청서 삭제", description = "입단 신청서를 삭제합니다.")
     @DeleteMapping("/{enrollId}")
-    public ResponseEntity<Void> deleteEnroll(@PathVariable("enrollId") Long enrollId) {
-        log.info("Delete request received for enrollId: {}", enrollId);
-        try {
-            enrollService.deleteById(enrollId);
-            log.info("Successfully deleted enrollId: {}", enrollId);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } catch (Exception e) {
-            log.error("Error occurred while deleting enrollId: {}", enrollId, e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ApiResponse<Void> deleteEnroll(@PathVariable("enrollId") Long enrollId, @LoginMember String username) {
+        enrollService.deleteById(enrollId, username);
+        return ApiResponse.success(EnrollSuccessType.DELETE_SUCCESS, null);
     }
 }

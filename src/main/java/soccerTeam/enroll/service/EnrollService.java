@@ -13,5 +13,5 @@ public interface EnrollService {
 
     EnrollDto findByIdAndUpdateHitCnt(Long id);
 
-    void deleteById(Long id);
+    void deleteById(Long id, String username);
 }

@@ -84,4 +84,9 @@ public class EnrollEntity {
                 .updatedAt(LocalDateTime.now())
                 .build();
     }
+
+    public EnrollEntity incrementHitCnt() {
+        this.hitCnt += 1;
+        return this;
+    }
 }
