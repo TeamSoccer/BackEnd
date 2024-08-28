@@ -1,5 +1,6 @@
 package soccerTeam.enroll.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -49,7 +50,11 @@ public class EnrollDto {
     @Schema(description = "마지막으로 수정된 시간", example = "2024-08-27T10:15:30")
     private LocalDateTime updatedAt;
 
-    public static EnrollDto of(EnrollEntity enroll) {
+    @JsonProperty("isOwner")
+    @Schema(description = "현재 사용자가 작성자인지 여부", example = "true")
+    private boolean isOwner;
+
+    public static EnrollDto of(EnrollEntity enroll, boolean isOwner) {
         return EnrollDto.builder()
                 .id(enroll.getId())
                 .player(PlayerProfileResponse.of(enroll.getPlayer()))
@@ -61,6 +66,7 @@ public class EnrollDto {
                 .region(enroll.getPlayer().getRegion())
                 .createdAt(enroll.getCreatedAt())
                 .updatedAt(enroll.getUpdatedAt())
+                .isOwner(isOwner) // 작성자인지 여부 설정
                 .build();
     }
 }
