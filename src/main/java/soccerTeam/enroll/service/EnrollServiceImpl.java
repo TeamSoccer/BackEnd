@@ -29,7 +29,6 @@ import soccerTeam.type.soccerTeam.SoccerTeamErrorType;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Slf4j  // 이 애너테이션으로 log 객체를 초기화합니다.
 @Service
 @RequiredArgsConstructor
 public class EnrollServiceImpl implements EnrollService {
