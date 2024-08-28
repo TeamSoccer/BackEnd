@@ -64,10 +64,7 @@ public class EnrollServiceImpl implements EnrollService {
             throw new BadRequestException(EnrollErrorType.ONLY_OWNER_CAN_MODIFY);
         }
 
-        enroll.setTitle(updateRequest.title());
-        enroll.setContent(updateRequest.content());
-        enroll.setPosition(updateRequest.position());
-        enroll.setUpdatedAt(LocalDateTime.now());
+        updateRequest.updateTo(enroll);
 
         return EnrollUpdateDto.of(enroll);
     }
