@@ -10,6 +10,7 @@ import soccerTeam.enroll.dto.EnrollDto;
 import soccerTeam.enroll.dto.EnrollListResponse;
 import soccerTeam.enroll.repository.EnrollEntity;
 import soccerTeam.enroll.repository.EnrollRepository;
+import soccerTeam.exception.BadRequestException;
 import soccerTeam.exception.NotFoundException;
 import soccerTeam.player.repository.PlayerEntity;
 import soccerTeam.player.repository.PlayerRepository;
@@ -19,6 +20,7 @@ import soccerTeam.type.enroll.EnrollErrorType;
 import soccerTeam.type.player.PlayerErrorType;
 import soccerTeam.type.soccerTeam.SoccerTeamErrorType;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -50,12 +52,25 @@ public class EnrollServiceImpl implements EnrollService {
                 .toList();
     }
 
+    // update-enroll
     @Override
+    @Transactional
     public void updateEnroll(String username, EnrollUpdateRequest updateRequest) {
         EnrollEntity enroll = enrollRepository.findById(updateRequest.id())
                 .orElseThrow(() -> new NotFoundException(EnrollErrorType.ENROLL_NOT_FOUND));
 
-        enrollRepository.update(username, EnrollUpdateDto.from(updateRequest));
+        PlayerEntity player = enroll.getPlayer();
+
+        if (!player.getUsername().equals(username)) {
+            throw new BadRequestException(EnrollErrorType.ONLY_OWNER_CAN_MODIFY);
+        }
+
+        enroll.setTitle(updateRequest.title());
+        enroll.setContent(updateRequest.content());
+        enroll.setPosition(updateRequest.position());
+        enroll.setUpdatedAt(LocalDateTime.now());
+
+        enrollRepository.save(enroll);
     }
 
     public EnrollDto findByIdAndUpdateHitCnt(Long id) {

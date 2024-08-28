@@ -1,6 +1,5 @@
 package soccerTeam.enroll.service;
 
-import jakarta.validation.Valid;
 import soccerTeam.enroll.dto.EnrollCreateRequest;
 import soccerTeam.enroll.dto.EnrollCreateResponse;
 import soccerTeam.enroll.dto.EnrollDto;
@@ -14,7 +13,7 @@ public interface EnrollService {
 
     List<EnrollListResponse> getEnrollListByTeam(Long teamId);
 
-    void updateEnroll(String username, @Valid EnrollUpdateRequest updateRequest);
+    void updateEnroll(String username, EnrollUpdateRequest updateRequest);
 
     EnrollDto findByIdAndUpdateHitCnt(Long id);
 
