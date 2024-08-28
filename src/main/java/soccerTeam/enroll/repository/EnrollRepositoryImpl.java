@@ -27,10 +27,7 @@ public class EnrollRepositoryImpl implements EnrollRepository {
     @Transactional
     public Optional<EnrollEntity> findByIdAndUpdateHitCnt(Long id) {
         return jpaEnrollRepository.findById(id)
-                .map(enroll -> {
-                    enroll.setHitCnt(enroll.getHitCnt() + 1);
-                    return enroll;
-                });
+                .map(enroll -> enroll.incrementHitCnt());
     }
 
     @Override
