@@ -30,6 +30,5 @@ public class SoccerTeamDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 	private List<SoccerTeamFileDto> fileInfoList;
-    @JsonProperty("isOwner")
-    private boolean isOwner;
+    private Boolean isOwner;
 }
