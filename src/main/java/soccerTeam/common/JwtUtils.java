@@ -33,6 +33,13 @@ public class JwtUtils {
 		this.expiredMs = expiredMs;
 	}
 
+	public String extractTokenFromAuthorizationHeader(String authorizationHeader) {
+		if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+			return authorizationHeader.substring(7);
+		}
+		return null;
+	}
+
 	public String getUsername(String token) {
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
 	}

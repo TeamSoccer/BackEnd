@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
 import soccerTeam.common.FileUtils;
+import soccerTeam.common.JwtUtils;
 import soccerTeam.team.dto.response.SoccerTeamListResponseDto;
 import soccerTeam.team.SoccerTeamUpdateDto;
 import soccerTeam.team.dto.SoccerTeamDto;
@@ -36,6 +37,7 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
     private final SoccerTeamFileRepository soccerTeamFileRepository;
     private final PlayerRepository playerRepository;
     private final FileUtils fileUtils;
+    private final JwtUtils jwtUtils;
 
     @Override
     public List<SoccerTeamListResponseDto> selectSoccerTeamList() {
@@ -68,7 +70,7 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
 
     @Override
     @Transactional
-    public SoccerTeamDto selectSoccerTeamDetail(Long teamIdx) {
+    public SoccerTeamDto selectSoccerTeamDetail(Long teamIdx, String authorizationHeader) {
         SoccerTeamEntity soccerTeam = soccerTeamRepository.updateHitCount(teamIdx)
                 .orElseThrow(() -> new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND));
 
@@ -84,7 +86,20 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
                         .updatedAt(file.getUpdatedAt())
                         .build()
         ).toList();
-        return soccerTeam.toModel(files);
+        boolean isOwner = checkMethod(teamIdx, authorizationHeader); // 팀 소유자 여부 확인
+        return soccerTeam.toModel(files, isOwner); // isOwner 값을 추가로 전달
+    }
+    private boolean checkMethod(Long teamIdx, String token) {
+        SoccerTeamEntity soccerTeam = soccerTeamRepository.findById(teamIdx)
+                .orElseThrow(() -> new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND));
+        String jwtToken = jwtUtils.extractTokenFromAuthorizationHeader(token);
+        if (jwtToken == null) return false;
+        String username = jwtUtils.getUsername(jwtToken);
+
+        if (soccerTeam.getPlayer().getUsername().equals(username)) {
+            return true;
+        }
+        return false;
     }
 
     @Override

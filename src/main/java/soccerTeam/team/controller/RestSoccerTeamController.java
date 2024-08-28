@@ -60,9 +60,11 @@ public class RestSoccerTeamController {
     }
 
     @GetMapping("/{teamIdx}")
-    public ApiResponse<SoccerTeamDto> getSoccerTeamDetail(@PathVariable("teamIdx") Long teamIdx) {
-        SoccerTeamDto soccerTeamDtoResult = soccerTeamService.selectSoccerTeamDetail(teamIdx);
-        return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_SUCCESS, soccerTeamDtoResult);
+    public ApiResponse<SoccerTeamDto> getSoccerTeamDetail(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable("teamIdx") Long teamIdx) {
+        SoccerTeamDto soccerTeamDtoResult = soccerTeamService.selectSoccerTeamDetail(teamIdx, authorizationHeader);
+        return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_SUCCESS,soccerTeamDtoResult);
     }
 
     @PutMapping

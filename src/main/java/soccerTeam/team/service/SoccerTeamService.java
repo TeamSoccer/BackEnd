@@ -20,7 +20,7 @@ public interface SoccerTeamService {
 	
 	void updateSoccerTeam(String username, SoccerTeamUpdateRequest updateRequest, MultipartFile[] files);
 
-	SoccerTeamDto selectSoccerTeamDetail(Long teamIdx);
+	SoccerTeamDto selectSoccerTeamDetail(Long teamIdx, String token);
 
 	void deleteSoccerTeam(Long teamIdx);
 	
