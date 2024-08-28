@@ -64,8 +64,7 @@ public class RestSoccerTeamController {
     public ApiResponse<SoccerTeamDto> getSoccerTeamDetail(
             @RequestHeader("Authorization") String authorizationHeader,
             @PathVariable("teamIdx") Long teamIdx) {
-        String token = authorizationHeader != null ? authorizationHeader : "";
-        SoccerTeamDto soccerTeamDtoResult = soccerTeamService.selectSoccerTeamDetail(teamIdx, token);
+        SoccerTeamDto soccerTeamDtoResult = soccerTeamService.selectSoccerTeamDetail(teamIdx, authorizationHeader);
         return ApiResponse.success(SoccerTeamSuccessType.GET_SOCCER_TEAM_SUCCESS,soccerTeamDtoResult);
     }
 

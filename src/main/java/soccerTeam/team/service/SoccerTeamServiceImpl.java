@@ -70,7 +70,7 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
 
     @Override
     @Transactional
-    public SoccerTeamDto selectSoccerTeamDetail(Long teamIdx, String token) {
+    public SoccerTeamDto selectSoccerTeamDetail(Long teamIdx, String authorizationHeader) {
         SoccerTeamEntity soccerTeam = soccerTeamRepository.updateHitCount(teamIdx)
                 .orElseThrow(() -> new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND));
 
@@ -86,7 +86,7 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
                         .updatedAt(file.getUpdatedAt())
                         .build()
         ).toList();
-        boolean isOwner = checkMethod(teamIdx, token); // 팀 소유자 여부 확인
+        boolean isOwner = checkMethod(teamIdx, authorizationHeader); // 팀 소유자 여부 확인
         return soccerTeam.toModel(files, isOwner); // isOwner 값을 추가로 전달
     }
     @Override
@@ -96,9 +96,6 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
         String jwtToken = extractTokenFromAuthorizationHeader(token);
         if (jwtToken == null) return false;
         String username = jwtUtils.getUsername(jwtToken);
-
-        log.info("JWT username: {}", username);
-        log.info("Team owner's username: {}", soccerTeam.getPlayer().getUsername());
 
         if (soccerTeam.getPlayer().getUsername().equals(username)) {
             return true;
