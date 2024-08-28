@@ -1,10 +1,6 @@
 package soccerTeam.enroll.service;
 
-import soccerTeam.enroll.dto.EnrollCreateRequest;
-import soccerTeam.enroll.dto.EnrollCreateResponse;
-import soccerTeam.enroll.dto.EnrollDto;
-import soccerTeam.enroll.dto.EnrollListResponse;
-import soccerTeam.enroll.dto.EnrollUpdateRequest;
+import soccerTeam.enroll.dto.*;
 
 import java.util.List;
 
@@ -13,7 +9,7 @@ public interface EnrollService {
 
     List<EnrollListResponse> getEnrollListByTeam(Long teamId);
 
-    void updateEnroll(String username, EnrollUpdateRequest updateRequest);
+    EnrollUpdateDto updateEnroll(String username, EnrollUpdateRequest updateRequest);
 
     EnrollDto findByIdAndUpdateHitCnt(Long id);
 

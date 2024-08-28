@@ -1,6 +1,7 @@
 package soccerTeam.enroll.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import soccerTeam.enroll.repository.EnrollEntity;
 
 @Schema(description = "선수 입단신청 수정 DTO")
 public record EnrollUpdateDto(
@@ -9,12 +10,12 @@ public record EnrollUpdateDto(
         String content,
         String position) {
 
-    public static EnrollUpdateDto from(EnrollUpdateRequest request) {
+    public static EnrollUpdateDto of(EnrollEntity enrollEntity) {
         return new EnrollUpdateDto(
-                request.id(),
-                request.title(),
-                request.content(),
-                request.position()
+                enrollEntity.getId(),
+                enrollEntity.getTitle(),
+                enrollEntity.getContent(),
+                enrollEntity.getPosition()
         );
     }
 }

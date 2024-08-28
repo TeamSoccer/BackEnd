@@ -9,11 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soccerTeam.dto.ApiResponse;
-import soccerTeam.enroll.dto.EnrollCreateRequest;
-import soccerTeam.enroll.dto.EnrollCreateResponse;
-import soccerTeam.enroll.dto.EnrollDto;
-import soccerTeam.enroll.dto.EnrollListResponse;
-import soccerTeam.enroll.dto.EnrollUpdateRequest;
+import soccerTeam.enroll.dto.*;
 import soccerTeam.enroll.service.EnrollService;
 import soccerTeam.security.LoginMember;
 import soccerTeam.type.enroll.EnrollSuccessType;
@@ -51,11 +47,11 @@ public class EnrollController {
 
     @Operation(summary = "입단 신청서 수정", description = "입단 신청서를 수정합니다.")
     @PutMapping
-    public ApiResponse<?> updateEnroll(
+    public ApiResponse<EnrollUpdateDto> updateEnroll(
             @LoginMember String username,
             @Valid @RequestBody EnrollUpdateRequest updateRequest) {
-        enrollService.updateEnroll(username, updateRequest);
-        return ApiResponse.success(EnrollSuccessType.UPDATE_SUCCESS);
+        EnrollUpdateDto updatedEnroll = enrollService.updateEnroll(username, updateRequest);
+        return ApiResponse.success(EnrollSuccessType.UPDATE_SUCCESS, updatedEnroll);
     }
 
     @Operation(summary = "입단 신청서 상세 조회", description = "입단 신청서를 상세 조회합니다.")

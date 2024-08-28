@@ -55,12 +55,11 @@ public class EnrollServiceImpl implements EnrollService {
     // update-enroll
     @Override
     @Transactional
-    public void updateEnroll(String username, EnrollUpdateRequest updateRequest) {
+    public EnrollUpdateDto updateEnroll(String username, EnrollUpdateRequest updateRequest) {
         EnrollEntity enroll = enrollRepository.findById(updateRequest.id())
                 .orElseThrow(() -> new NotFoundException(EnrollErrorType.ENROLL_NOT_FOUND));
 
         PlayerEntity player = enroll.getPlayer();
-
         if (!player.getUsername().equals(username)) {
             throw new BadRequestException(EnrollErrorType.ONLY_OWNER_CAN_MODIFY);
         }
@@ -70,7 +69,7 @@ public class EnrollServiceImpl implements EnrollService {
         enroll.setPosition(updateRequest.position());
         enroll.setUpdatedAt(LocalDateTime.now());
 
-        enrollRepository.save(enroll);
+        return EnrollUpdateDto.of(enroll);
     }
 
     public EnrollDto findByIdAndUpdateHitCnt(Long id) {
