@@ -1,4 +1,3 @@
 FROM openjdk:21
-VOLUME /tmp
-COPY build/libs/soccerteam-project.jar soccerteam-project.jar
-ENTRYPOINT ["java","-jar","/soccerteam-project.jar","--spring.profiles.active=prod"]
+COPY build/libs/teamsoccer-server.jar teamsoccer-server.jar
+ENTRYPOINT ["java","-jar","/teamsoccer-server.jar","--spring.profiles.active=prod"]
