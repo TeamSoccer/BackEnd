@@ -11,7 +11,7 @@ import soccerTeam.enroll.repository.EnrollEntity;
 import soccerTeam.enroll.repository.EnrollRepository;
 import soccerTeam.enroll.repository.JpaEnrollRepository;
 import soccerTeam.exception.NotFoundException;
-import soccerTeam.exception.UnauthorizedActionException;
+import soccerTeam.exception.UnauthorizedException;
 import soccerTeam.player.repository.PlayerEntity;
 import soccerTeam.player.repository.PlayerRepository;
 import soccerTeam.team.repository.SoccerTeamEntity;
@@ -57,26 +57,18 @@ public class EnrollServiceImpl implements EnrollService {
     public EnrollDto findByIdAndUpdateHitCnt(Long id) {
         EnrollEntity enrollEntity = enrollRepository.findByIdAndUpdateHitCnt(id)
                 .orElseThrow(() -> new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND));
-
         return EnrollDto.of(enrollEntity);
     }
 
     @Override
     @Transactional
     public void deleteById(Long id, String username) {
-        try {
-            EnrollEntity enroll = jpaEnrollRepository.findById(id)
-                    .orElseThrow(() -> new NotFoundException(EnrollErrorType.NOT_FOUND));
-
-            if (!enroll.getPlayer().getUsername().equals(username)) {
-                throw new UnauthorizedActionException(EnrollErrorType.NOT_OWNED_BY_USER);
-            }
-            jpaEnrollRepository.deleteById(id);
-        } catch (UnauthorizedActionException e) {
-            throw e;
-
-        }catch (Exception e) {
-            throw new RuntimeException("삭제 중 예기치 못한 오류가 발생했습니다.", e);
+        EnrollEntity enroll = jpaEnrollRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(EnrollErrorType.NOT_FOUND));
+        if (!enroll.getPlayer().getUsername().equals(username)) {
+            throw new UnauthorizedException(EnrollErrorType.NOT_OWNED_BY_USER);
         }
+        jpaEnrollRepository.deleteById(id);
     }
+
 }
