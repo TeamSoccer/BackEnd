@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @AllArgsConstructor
-@Schema(description = " 신청서 상세 내역 응답 객체")
+@Schema(description = "신청서 상세 내역 응답 객체")
 public class EnrollDto {
 
     @Schema(description = "신청서 ID", example = "1")
