@@ -25,6 +25,4 @@ public interface SoccerTeamService {
 	void deleteSoccerTeam(Long teamIdx);
 	
 	SoccerTeamFileDto selectSoccerTeamFileInfo(Long id);
-
-	boolean checkMethod(Long teamIdx, String token);
 }

@@ -89,11 +89,10 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
         boolean isOwner = checkMethod(teamIdx, authorizationHeader); // 팀 소유자 여부 확인
         return soccerTeam.toModel(files, isOwner); // isOwner 값을 추가로 전달
     }
-    @Override
-    public boolean checkMethod(Long teamIdx, String token) {
+    private boolean checkMethod(Long teamIdx, String token) {
         SoccerTeamEntity soccerTeam = soccerTeamRepository.findById(teamIdx)
                 .orElseThrow(() -> new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND));
-        String jwtToken = extractTokenFromAuthorizationHeader(token);
+        String jwtToken = jwtUtils.extractTokenFromAuthorizationHeader(token);
         if (jwtToken == null) return false;
         String username = jwtUtils.getUsername(jwtToken);
 
@@ -101,12 +100,6 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
             return true;
         }
         return false;
-    }
-    private String extractTokenFromAuthorizationHeader(String authorizationHeader) {
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            return authorizationHeader.substring(7);
-        }
-        return null;
     }
 
     @Override
