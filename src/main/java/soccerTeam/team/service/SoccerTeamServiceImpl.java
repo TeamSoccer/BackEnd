@@ -71,7 +71,7 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
 
     @Override
     @Transactional
-    public SoccerTeamDto selectSoccerTeamDetail(Long teamIdx) {
+    public SoccerTeamDto selectSoccerTeamDetail(Long teamIdx, String token) {
         SoccerTeamEntity soccerTeam = soccerTeamRepository.updateHitCount(teamIdx)
                 .orElseThrow(() -> new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND));
 
@@ -87,19 +87,24 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
                         .updatedAt(file.getUpdatedAt())
                         .build()
         ).toList();
-        return soccerTeam.toModel(files);
+        boolean isOwner = checkMethod(teamIdx, token); // 팀 소유자 여부 확인
+        return soccerTeam.toModel(files, isOwner); // isOwner 값을 추가로 전달
     }
     @Override
-    public String checkMethod(Long teamIdx, String token) {
-        Optional<SoccerTeamEntity> soccerTeam = soccerTeamRepository.findById(teamIdx);
-        String username = jwtUtils.getUsername(extractTokenFromAuthorizationHeader(token));
-        if (soccerTeam.isEmpty()) {
-            throw new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND);
+    public boolean checkMethod(Long teamIdx, String token) {
+        SoccerTeamEntity soccerTeam = soccerTeamRepository.findById(teamIdx)
+                .orElseThrow(() -> new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND));
+        String jwtToken = extractTokenFromAuthorizationHeader(token);
+        if (jwtToken == null) return false;
+        String username = jwtUtils.getUsername(jwtToken);
+
+        log.info("JWT username: {}", username);
+        log.info("Team owner's username: {}", soccerTeam.getPlayer().getUsername());
+
+        if (soccerTeam.getPlayer().getUsername().equals(username)) {
+            return true;
         }
-        if (soccerTeam.get().getPlayer().getUsername().equals(username)) {
-            return "YES";
-        }
-        return "NO";
+        return false;
     }
     private String extractTokenFromAuthorizationHeader(String authorizationHeader) {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {

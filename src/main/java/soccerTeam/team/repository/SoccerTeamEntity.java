@@ -150,7 +150,7 @@ public class SoccerTeamEntity {
 				: "";
 	}
 
-	public SoccerTeamDto toModel(List<SoccerTeamFileDto> files) {
+	public SoccerTeamDto toModel(List<SoccerTeamFileDto> files, boolean isOwner) {
 		return new SoccerTeamDto(
 				id,
 				PlayerProfileResponse.of(player),
@@ -170,7 +170,8 @@ public class SoccerTeamEntity {
 				hitCnt,
 				createdAt,
 				updatedAt,
-				files
+				files,
+				isOwner
 		);
 	}
 

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import soccerTeam.player.dto.response.PlayerProfileResponse;
 
@@ -29,5 +30,6 @@ public class SoccerTeamDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 	private List<SoccerTeamFileDto> fileInfoList;
+    @JsonProperty("isOwner")
+    private boolean isOwner;
 }
-

@@ -11,37 +11,32 @@ public record ApiResponse<T>(
         int status,
         String code,
         String message,
-        @JsonInclude(JsonInclude.Include.NON_NULL) T data, String checkResult ) {
-
+        @JsonInclude(JsonInclude.Include.NON_NULL) T data) {
     public static ApiResponse<?> success(SuccessType successType) {
-        return new ApiResponse<>(200, successType.getCode(), successType.getMessage(), null, null);
+        return new ApiResponse<>(200, successType.getCode(), successType.getMessage(), null);
     }
 
     public static <T> ApiResponse<T> success(SuccessType successType, T data) {
-        return new ApiResponse<>(200, successType.getCode(), successType.getMessage(), data, null);
-    }
-
-    public static <T> ApiResponse<T> success(SuccessType successType, T data, String meta ) {
-        return new ApiResponse<>(200, successType.getCode(), successType.getMessage(),data, meta); // meta: checkResult의 반환값을 저장하는 매개변수
+        return new ApiResponse<>(200, successType.getCode(), successType.getMessage(), data);
     }
 
     public static ApiResponse<?> fail(BaseException exception) {
         ErrorType errorType = exception.getErrorType();
         return new ApiResponse<>(
-                exception.getHttpCode(), errorType.getCode(), errorType.getMessage(), null, null);
+                exception.getHttpCode(), errorType.getCode(), errorType.getMessage(), null);
     }
 
     public static <T> ApiResponse<T> fail(BaseException exception, T data) {
         ErrorType errorType = exception.getErrorType();
         return new ApiResponse<>(
-                exception.getHttpCode(), errorType.getCode(), errorType.getMessage(), data, null);
+                exception.getHttpCode(), errorType.getCode(), errorType.getMessage(), data);
     }
 
     public static ApiResponse<?> fail(ErrorType errorType, int httpCode) {
-        return new ApiResponse<>(httpCode, errorType.getCode(), errorType.getMessage(), null, null);
+        return new ApiResponse<>(httpCode, errorType.getCode(), errorType.getMessage(), null);
     }
 
     public static <T> ApiResponse<?> fail(ErrorType errorType, int httpCode, T data) {
-        return new ApiResponse<>(httpCode, errorType.getCode(), errorType.getMessage(), data, null);
+        return new ApiResponse<>(httpCode, errorType.getCode(), errorType.getMessage(), data);
     }
 }
