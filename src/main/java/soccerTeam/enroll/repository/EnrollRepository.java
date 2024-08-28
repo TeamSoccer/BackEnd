@@ -10,6 +10,8 @@ public interface EnrollRepository {
 
     List<EnrollEntity> findByTeam(SoccerTeamEntity soccerTeam);
 
+    Optional<EnrollEntity> findById(Long id);
+
     Optional<EnrollEntity> findByIdAndUpdateHitCnt(Long id);
 
     void deleteById(Long id);

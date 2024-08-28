@@ -24,6 +24,10 @@ public class EnrollRepositoryImpl implements EnrollRepository {
     }
 
     @Override
+    public Optional<EnrollEntity> findById(Long id) {
+        return jpaEnrollRepository.findById(id);
+    }
+
     @Transactional
     public Optional<EnrollEntity> findByIdAndUpdateHitCnt(Long id) {
         return jpaEnrollRepository.findById(id)
