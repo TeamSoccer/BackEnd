@@ -83,9 +83,9 @@ public class EnrollServiceImpl implements EnrollService {
     @Transactional
     public void deleteById(Long id, String username) {
         EnrollEntity enroll = jpaEnrollRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(EnrollErrorType.NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(EnrollErrorType.ENROLL_NOT_FOUND));
         if (!enroll.getPlayer().getUsername().equals(username)) {
-            throw new UnauthorizedException(EnrollErrorType.NOT_OWNED_BY_USER);
+            throw new UnauthorizedException(EnrollErrorType.ONLY_OWNER_CAN_MODIFY);
         }
         jpaEnrollRepository.deleteById(id);
     }
