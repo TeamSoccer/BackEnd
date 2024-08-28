@@ -49,7 +49,7 @@ public class EnrollController {
         return ApiResponse.success(EnrollSuccessType.LIST_SUCCESS, response);
     }
 
-    // update-enroll
+    @Operation(summary = "입단 신청서 수정", description = "입단 신청서를 수정합니다.")
     @PutMapping
     public ApiResponse<?> updateEnroll(
             @LoginMember String username,

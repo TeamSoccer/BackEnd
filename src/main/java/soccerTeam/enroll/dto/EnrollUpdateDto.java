@@ -7,14 +7,16 @@ public record EnrollUpdateDto(
         Long id,
         Long teamId,
         String title,
-        String content) {
+        String content,
+        String position) {
 
     public static EnrollUpdateDto from(EnrollUpdateRequest request) {
         return new EnrollUpdateDto(
                 request.id(),
                 request.teamId(),
                 request.title(),
-                request.content()
+                request.content(),
+                request.position()
         );
     }
 }

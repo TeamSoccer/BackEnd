@@ -46,6 +46,7 @@ public class EnrollRepositoryImpl implements EnrollRepository {
 
             enrollEntity.setTitle(enrollUpdateDto.title());
             enrollEntity.setContent(enrollUpdateDto.content());
+            enrollEntity.setPosition(enrollUpdateDto.position());
             enrollEntity.setUpdatedAt(LocalDateTime.now());
             return Optional.of(jpaEnrollRepository.save(enrollEntity));
         }
