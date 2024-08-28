@@ -71,8 +71,6 @@ public class EnrollServiceImpl implements EnrollService {
                 throw new NotFoundException(EnrollErrorType.NOT_OWNED_BY_USER);
             }
             jpaEnrollRepository.deleteById(id);
-        } catch (NotFoundException e) {
-            throw e;
         } catch (Exception e) {
             throw new RuntimeException("삭제 중 예기치 못한 오류가 발생했습니다.", e);
         }
