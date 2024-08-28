@@ -61,8 +61,14 @@ tasks.withType(JavaCompile) {
     options.compilerArgs += ['-parameters']
 }
 
-
-
 tasks.named('test') {
 	useJUnitPlatform()
+}
+tasks.named('jar') {
+	enabled = false
+}
+bootJar {
+	archiveBaseName.set('soccerteam-project')
+	archiveVersion.set('')
+	archiveClassifier.set('')
 }
