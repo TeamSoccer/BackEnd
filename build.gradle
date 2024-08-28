@@ -65,8 +65,8 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+jar { enabled = false }
+
 bootJar {
-	archiveBaseName.set('teamsoccer-server')
-	archiveVersion.set('')
-	archiveClassifier.set('')
+	archiveFileName.set('teamsoccer-server')
 }
