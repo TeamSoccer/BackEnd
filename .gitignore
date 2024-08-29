@@ -6,6 +6,8 @@ build/
 !**/src/test/**/build/
 **/application-secret.properties
 files/
+**/*credentials.yml
+**/*configmap.yml
 
 ### STS ###
 .apt_generated

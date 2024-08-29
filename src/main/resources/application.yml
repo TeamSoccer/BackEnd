@@ -4,8 +4,6 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
     baseline-version: 1
-    user: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
   application:
     name: soccerTeam
   config:
@@ -21,7 +19,6 @@ spring:
     defer-datasource-initialization: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
         default_batch_fetch_size: 100
     show-sql: true
@@ -38,7 +35,9 @@ spring:
   jwt:
     secret: ${JWT_SECRET}
     expire-length: 864000000
+
   client:
     url: ${CLIENT_URL}
     test-url: http://localhost:3000
+
 #logging.level.root: debug
