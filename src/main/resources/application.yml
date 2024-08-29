@@ -38,9 +38,7 @@ spring:
   jwt:
     secret: ${JWT_SECRET}
     expire-length: 864000000
-
   client:
     url: ${CLIENT_URL}
     test-url: http://localhost:3000
-
 #logging.level.root: debug
