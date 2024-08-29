@@ -69,7 +69,7 @@ public class SoccerTeamServiceImpl implements SoccerTeamService {
     }
 
     @Override
-    @Transactional
+    @Transactional( readOnly = true)
     public SoccerTeamDto selectSoccerTeamDetail(Long teamIdx, String authorizationHeader) {
         SoccerTeamEntity soccerTeam = soccerTeamRepository.updateHitCount(teamIdx)
                 .orElseThrow(() -> new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND));
