@@ -68,5 +68,5 @@ tasks.named('test') {
 jar { enabled = false }
 
 bootJar {
-	archiveFileName.set('teamsoccer-server')
+	archiveFileName.set('teamsoccer-server.jar')
 }
