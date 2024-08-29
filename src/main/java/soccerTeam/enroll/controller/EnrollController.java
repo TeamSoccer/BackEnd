@@ -5,8 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import soccerTeam.dto.ApiResponse;
 import soccerTeam.enroll.dto.*;
@@ -15,6 +14,7 @@ import soccerTeam.security.LoginMember;
 import soccerTeam.type.enroll.EnrollSuccessType;
 import lombok.extern.slf4j.Slf4j;
 
+import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -55,14 +55,17 @@ public class EnrollController {
     @Operation(summary = "입단 신청서 상세 조회", description = "입단 신청서를 상세 조회합니다.")
     @GetMapping("/{enrollId}")
     public ApiResponse<EnrollDto> getEnrollDetail(
-            @Parameter(description = "입단 신청서 id", required = true) @PathVariable("enrollId") Long enrollId) {
-        EnrollDto enrollDto = enrollService.findByIdAndUpdateHitCnt(enrollId);
+            @Parameter(description = "입단 신청서 id", required = true) @PathVariable("enrollId") Long enrollId,
+            @RequestHeader("Authorization") String token) {
+        EnrollDto enrollDto = enrollService.findByIdAndUpdateHitCnt(enrollId, token);
         return ApiResponse.success(EnrollSuccessType.ENROLL_SUCCESS, enrollDto);
     }
 
     @Operation(summary = "입단 신청서 삭제", description = "입단 신청서를 삭제합니다.")
     @DeleteMapping("/{enrollId}")
-    public ApiResponse<Void> deleteEnroll(@PathVariable("enrollId") Long enrollId, @LoginMember String username) {
+    public ApiResponse<Void> deleteEnroll(
+            @PathVariable("enrollId") Long enrollId,
+            @LoginMember String username) {
         enrollService.deleteById(enrollId, username);
         return ApiResponse.success(EnrollSuccessType.DELETE_SUCCESS, null);
     }

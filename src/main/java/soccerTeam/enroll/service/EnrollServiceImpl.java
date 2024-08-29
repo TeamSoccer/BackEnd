@@ -1,7 +1,10 @@
 package soccerTeam.enroll.service;
 
+import ch.qos.logback.classic.Logger;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import soccerTeam.common.JwtUtils;
 import soccerTeam.enroll.dto.*;
 import org.springframework.transaction.annotation.Transactional;
 import soccerTeam.enroll.dto.EnrollCreateRequest;
@@ -26,6 +29,7 @@ import soccerTeam.type.soccerTeam.SoccerTeamErrorType;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EnrollServiceImpl implements EnrollService {
@@ -33,6 +37,7 @@ public class EnrollServiceImpl implements EnrollService {
     private final PlayerRepository playerRepository;
     private final SoccerTeamRepository soccerTeamRepository;
     private final JpaEnrollRepository jpaEnrollRepository;
+    private final JwtUtils jwtUtils;
 
     @Override
     public EnrollCreateResponse create(String username, EnrollCreateRequest enrollCreateRequest) {
@@ -69,14 +74,23 @@ public class EnrollServiceImpl implements EnrollService {
         }
 
         updateRequest.updateTo(enroll);
-
         return EnrollUpdateDto.of(enroll);
     }
 
-    public EnrollDto findByIdAndUpdateHitCnt(Long id) {
+    public EnrollDto findByIdAndUpdateHitCnt(Long id, String token) {
         EnrollEntity enrollEntity = enrollRepository.findByIdAndUpdateHitCnt(id)
                 .orElseThrow(() -> new NotFoundException(SoccerTeamErrorType.TEAM_NOT_FOUND));
-        return EnrollDto.of(enrollEntity);
+
+        boolean isOwner = checkOwner(enrollEntity, token);
+
+        return EnrollDto.of(enrollEntity, isOwner);
+    }
+
+    private boolean checkOwner(EnrollEntity enrollEntity, String token) {
+        String jwtToken = jwtUtils.extractTokenFromAuthorizationHeader(token);
+        if (jwtToken == null) return false;
+        String username = jwtUtils.getUsername(jwtToken);
+        return enrollEntity.getPlayer().getUsername().equals(username);
     }
 
     @Override
@@ -89,5 +103,4 @@ public class EnrollServiceImpl implements EnrollService {
         }
         jpaEnrollRepository.deleteById(id);
     }
-
 }
