@@ -11,7 +11,7 @@ public interface EnrollService {
 
     EnrollUpdateDto updateEnroll(String username, EnrollUpdateRequest updateRequest);
 
-    EnrollDto findByIdAndUpdateHitCnt(Long id, String username);
+    EnrollDto findByIdAndUpdateHitCnt(Long id, String token);
 
     void deleteById(Long id, String username);
 }

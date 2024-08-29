@@ -50,9 +50,8 @@ public class EnrollDto {
     @Schema(description = "마지막으로 수정된 시간", example = "2024-08-27T10:15:30")
     private LocalDateTime updatedAt;
 
-    @JsonProperty("isOwner")
     @Schema(description = "현재 사용자가 작성자인지 여부", example = "true")
-    private boolean isOwner;
+    private Boolean isOwner;
 
     public static EnrollDto of(EnrollEntity enroll, boolean isOwner) {
         return EnrollDto.builder()

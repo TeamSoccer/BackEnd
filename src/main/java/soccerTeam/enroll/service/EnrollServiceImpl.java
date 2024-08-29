@@ -29,6 +29,7 @@ import soccerTeam.type.soccerTeam.SoccerTeamErrorType;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EnrollServiceImpl implements EnrollService {
@@ -94,12 +95,10 @@ public class EnrollServiceImpl implements EnrollService {
 
     @Override
     @Transactional
-    public void deleteById(Long id, String token) {
+    public void deleteById(Long id, String username) {
         EnrollEntity enroll = jpaEnrollRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(EnrollErrorType.ENROLL_NOT_FOUND));
-
-        boolean isOwner = checkOwner(enroll, token);
-        if (!isOwner) {
+        if (!enroll.getPlayer().getUsername().equals(username)) {
             throw new UnauthorizedException(EnrollErrorType.ONLY_OWNER_CAN_MODIFY);
         }
         jpaEnrollRepository.deleteById(id);

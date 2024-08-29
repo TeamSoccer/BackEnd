@@ -63,9 +63,10 @@ public class EnrollController {
 
     @Operation(summary = "입단 신청서 삭제", description = "입단 신청서를 삭제합니다.")
     @DeleteMapping("/{enrollId}")
-    public ApiResponse<Void> deleteEnroll(@PathVariable("enrollId") Long enrollId,
-                                          @RequestHeader("Authorization") String token) {
-        enrollService.deleteById(enrollId, token);
+    public ApiResponse<Void> deleteEnroll(
+            @PathVariable("enrollId") Long enrollId,
+            @LoginMember String username) {
+        enrollService.deleteById(enrollId, username);
         return ApiResponse.success(EnrollSuccessType.DELETE_SUCCESS, null);
     }
 }
