@@ -55,7 +55,7 @@ public class EnrollController {
     @Operation(summary = "입단 신청서 상세 조회", description = "입단 신청서를 상세 조회합니다.")
     @GetMapping("/{enrollId}")
     public ApiResponse<EnrollDto> getEnrollDetail(
-            @Parameter(description = "입단 신청서 id", required = true) @PathVariable("enrollId") Long enrollId,
+            @PathVariable("enrollId") Long enrollId,
             @RequestHeader("Authorization") String token) {
         EnrollDto enrollDto = enrollService.findByIdAndUpdateHitCnt(enrollId, token);
         return ApiResponse.success(EnrollSuccessType.ENROLL_SUCCESS, enrollDto);
