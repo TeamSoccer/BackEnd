@@ -14,7 +14,7 @@ public class SpringDocConfiguration {
 		return new OpenAPI().info(
 				new Info()
 					.title("스프링부트 게시판 REST API")
-					.description("스프링부트 기반의 게시판 REST API 서비")
+					.description("스프링부트 기반의 게시판 REST API 서비스")
 					.version("v1.0")
 					.license(
 							new License()
